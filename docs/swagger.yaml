@@ -1,0 +1,302 @@
+basePath: /v1
+definitions:
+  book.CreateBookModel:
+    properties:
+      author:
+        type: string
+      genre:
+        type: string
+      height:
+        type: string
+      publisher:
+        type: string
+      title:
+        type: string
+    type: object
+  book.UpdateBookModel:
+    properties:
+      author:
+        type: string
+      genre:
+        type: string
+      height:
+        type: string
+      publisher:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.Book:
+    properties:
+      author:
+        type: string
+      created_at:
+        example: "2006-01-02T15:04:05Z"
+        type: string
+      genre:
+        type: string
+      height:
+        type: string
+      id:
+        type: integer
+      publisher:
+        type: string
+      title:
+        type: string
+      updated_at:
+        example: "2006-01-02T15:04:05Z"
+        type: string
+    type: object
+  login.ReqLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  user.CreateUserModel:
+    properties:
+      confirm_password:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
+  user.GetUserModel:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      user_name:
+        type: string
+    type: object
+  user.UpdateUserModel:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      updated_at:
+        example: "2006-01-02T15:04:05Z"
+        type: string
+      user_name:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: veliulugut1@gmail.com
+    name: Veli Ulugut
+  description: library
+  title: Library API
+  version: "1.0"
+paths:
+  /book:
+    post:
+      consumes:
+      - application/json
+      description: create a book
+      parameters:
+      - description: Create a new user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/book.CreateBookModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: create book
+      tags:
+      - book
+  /book/{id}:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+      summary: delete book by id
+      tags:
+      - book
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update a  user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/book.UpdateBookModel'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: update book by id
+      tags:
+      - book
+  /book/{name}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: get book by name
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Book'
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: get book by name
+      tags:
+      - book
+  /book/get/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: get book by id
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Book'
+      - description: id
+        in: path
+        name: name
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: get book by id
+      tags:
+      - book
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: login
+      parameters:
+      - description: login
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/login.ReqLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: login
+      tags:
+      - auth
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: create user
+      parameters:
+      - description: Create a new user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: create user
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+      summary: delete user by id
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/user.GetUserModel'
+      summary: get user by id
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Update a  user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserModel'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: update user by id
+      tags:
+      - user
+swagger: "2.0"
