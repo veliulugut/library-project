@@ -117,7 +117,7 @@ func TestBook_GetBookByName(t *testing.T) {
 	}
 }
 
-/*func TestBook_GetBookByID(t *testing.T) {
+func TestBook_GetBookByID(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
 	w := httptest.NewRecorder()
@@ -132,5 +132,21 @@ func TestBook_GetBookByName(t *testing.T) {
 
 	mockService := book.NewMockServiceBook(ctrl)
 
-	mockService.EXPECT().GetBookByID(gomock.Any(), gomock.Any()).Return(nil, nil).AnyTimes()
-}*/
+	mockService.EXPECT().GetBookByID(gomock.Any(), 2).Return(nil, nil).AnyTimes()
+
+	s := Book{
+		bookSrv: mockService,
+	}
+
+	router.GET("/book/get/:id", s.GetBookByID)
+
+	w = httptest.NewRecorder()
+
+	req, _ := http.NewRequest(http.MethodGet, "/book/get/2", bytes.NewBuffer([]byte(`{"field1": 2, "field2": "test2"}`)))
+
+	router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Errorf("Expected status code %d, but got %d", http.StatusOK, w.Code)
+	}
+}

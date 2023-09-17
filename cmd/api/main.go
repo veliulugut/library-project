@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"library/cmd/api/server"
+	"library/ent"
+	"library/pkg/utils"
 	"log"
 )
 
@@ -26,4 +29,9 @@ func main() {
 		log.Fatalln(err)
 
 	}
+
+	var db *ent.Client
+	data := utils.NewBookData(db)
+
+	fmt.Println(data)
 }

@@ -83,6 +83,9 @@ func (b *BookRepository) GetBookByID(ctx context.Context, id int) (*dto.Book, er
 	)
 
 	if dbBook, err = b.DBClient.Book.Get(ctx, id); err != nil {
+		if ent.IsNotFound(err) {
+			return nil, fmt.Errorf("entadp user / get user by user by email :%w", ErrNotFound)
+		}
 		return nil, fmt.Errorf("entadp u")
 	}
 

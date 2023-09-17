@@ -332,3 +332,53 @@ func TestUserRepository_GetUserByEmail(t *testing.T) {
 
 	}
 }
+
+func TestBookRepository_GetBookByID(t *testing.T) {
+	opts := []enttest.Option{
+		enttest.WithOptions(ent.Log(t.Log)),
+	}
+	client := enttest.Open(t, "sqlite3", "file:ent?mode=memory&_fk=1", opts...)
+	defer client.Close()
+
+	userRepo := NewUserRepository(client)
+
+	user := dto.User{
+		Email:     "test@mail.com",
+		Password:  "123123",
+		Username:  "veli",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		ID:        1,
+	}
+
+	if err := userRepo.CreateUser(context.Background(), &user); err != nil {
+		t.Error(err)
+	}
+
+	test := []struct {
+		description string
+		bookID      int
+		expectErr   error
+	}{
+		{
+			description: "pass",
+			bookID:      1,
+			expectErr:   nil,
+		},
+		{
+			description: "did not passed",
+			bookID:      2,
+			expectErr:   ErrNotFound,
+		},
+	}
+
+	for _, tt := range test {
+		t.Run(fmt.Sprintf("GetBookByID_%s", tt.description), func(t *testing.T) {
+			_, err := userRepo.GetUserByID(context.Background(), tt.bookID)
+			if !errors.Is(err, tt.expectErr) {
+				t.Errorf("expected error :%v but got error : %v", tt.expectErr, err)
+			}
+
+		})
+	}
+}

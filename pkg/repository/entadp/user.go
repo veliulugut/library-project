@@ -72,10 +72,15 @@ func (u *UserRepository) GetUserByID(ctx context.Context, id int) (*dto.User, er
 	)
 
 	if dbUser, err = u.DBClient.User.Get(ctx, id); err != nil {
-		if ent.IsNotFound(err) {
-			return nil, fmt.Errorf("entadp user / get user by user by email :%w", ErrNotFound)
+		if err != nil {
+			if ent.IsNotFound(err) {
+				return nil, fmt.Errorf("user not found: %w", ErrNotFound)
+			}
+			return nil, fmt.Errorf("failed to get user by ID: %w", err)
 		}
-		return nil, fmt.Errorf("entadp user / get user by id :%w", err)
+
+		return helper.DBUserToDTO(dbUser), nil
+
 	}
 
 	return helper.DBUserToDTO(dbUser), nil

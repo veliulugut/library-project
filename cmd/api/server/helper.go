@@ -33,6 +33,7 @@ func (s *Server) initDB() error {
 	}
 
 	return nil
+
 }
 
 /*func (s *Server) initCache() {
