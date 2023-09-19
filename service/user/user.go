@@ -3,10 +3,12 @@ package user
 import (
 	"context"
 	"fmt"
+	"library/ent"
 	"library/pkg/passwd"
 	"library/pkg/repository/dto"
 	"library/pkg/repository/entadp"
 	"library/pkg/validator"
+	"time"
 )
 
 var _ Service = (*User)(nil)
@@ -95,4 +97,27 @@ func (u *User) UpdateUser(ctx context.Context, id int, c *UpdateUserModel) error
 	}
 
 	return nil
+}
+
+func (u *User) ListBook(ctx context.Context, limit, offset int, orderBy string) ([]*GetUserModel, int, error) {
+	books, count, err := u.repo.User().ListUser(ctx, limit, offset, orderBy)
+	if err != nil {
+		return nil, 0, fmt.Errorf("book srv / list book: %w", err)
+	}
+
+	var userModels []*GetUserModel
+	for _, dbUser := range books {
+		usersModel := dbUserToGetUserModel(dbUser)
+		userModels = append(userModels, usersModel)
+	}
+
+	return userModels, count, nil
+}
+
+func dbUserToGetUserModel(dbUser *ent.User) *GetUserModel {
+	return &GetUserModel{
+		Email:     dbUser.Email,
+		UserName:  dbUser.Username,
+		CreatedAt: time.Now(),
+	}
 }

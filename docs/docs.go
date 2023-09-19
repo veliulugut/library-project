@@ -33,7 +33,7 @@ const docTemplate = `{
                 "summary": "create book",
                 "parameters": [
                     {
-                        "description": "Create a new user",
+                        "description": "Create a new book",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -63,25 +63,19 @@ const docTemplate = `{
                 "summary": "get book by id",
                 "parameters": [
                     {
-                        "description": "get book by id",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.Book"
-                        }
-                    },
-                    {
                         "type": "integer",
                         "description": "id",
-                        "name": "name",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/book.GetBookModel"
+                        }
                     }
                 }
             }
@@ -157,15 +151,6 @@ const docTemplate = `{
                 "summary": "get book by name",
                 "parameters": [
                     {
-                        "description": "get book by name",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.Book"
-                        }
-                    },
-                    {
                         "type": "string",
                         "description": "name",
                         "name": "name",
@@ -175,7 +160,76 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/book.GetBookByName"
+                        }
+                    }
+                }
+            }
+        },
+        "/books": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "book"
+                ],
+                "summary": "get list of books",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "pageNumber",
+                        "name": "pageNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pageSize",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "isExport",
+                        "name": "isExport",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "onlyThisPageExport",
+                        "name": "onlyThisPageExport",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "orderBy",
+                        "name": "orderBy",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "$ref": "#/definitions/book.ListBookResponse"
+                        }
                     }
                 }
             }
@@ -350,6 +404,60 @@ const docTemplate = `{
                 }
             }
         },
+        "book.GetBookByName": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "genre": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "string"
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "book.GetBookModel": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "genre": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "string"
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "book.ListBookResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Book"
+                    }
+                },
+                "rowCount": {
+                    "type": "integer"
+                }
+            }
+        },
         "book.UpdateBookModel": {
             "type": "object",
             "properties": {
@@ -370,34 +478,40 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.Book": {
+        "ent.Book": {
             "type": "object",
             "properties": {
                 "author": {
+                    "description": "Author holds the value of the \"author\" field.",
                     "type": "string"
                 },
                 "created_at": {
-                    "type": "string",
-                    "example": "2006-01-02T15:04:05Z"
+                    "description": "CreatedAt holds the value of the \"created_at\" field.",
+                    "type": "string"
                 },
                 "genre": {
+                    "description": "Genre holds the value of the \"genre\" field.",
                     "type": "string"
                 },
                 "height": {
+                    "description": "Height holds the value of the \"height\" field.",
                     "type": "string"
                 },
                 "id": {
+                    "description": "ID of the ent.",
                     "type": "integer"
                 },
                 "publisher": {
+                    "description": "Publisher holds the value of the \"publisher\" field.",
                     "type": "string"
                 },
                 "title": {
+                    "description": "Title holds the value of the \"title\" field.",
                     "type": "string"
                 },
                 "updated_at": {
-                    "type": "string",
-                    "example": "2006-01-02T15:04:05Z"
+                    "description": "UpdatedAt holds the value of the \"updated_at\" field.",
+                    "type": "string"
                 }
             }
         },

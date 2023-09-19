@@ -9,4 +9,6 @@ type Handler interface {
 	UpdatedBook(c *gin.Context)
 	GetBookByName(c *gin.Context)
 	GetBookByID(c *gin.Context)
+	ListBook(c *gin.Context)
+	ServeExcel(c *gin.Context, limit, offset int, orderBy string, fetchAllData bool)
 }

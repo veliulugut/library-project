@@ -2,6 +2,7 @@ package entadp
 
 import (
 	"context"
+	"library/ent"
 	"library/pkg/repository/dto"
 )
 
@@ -17,8 +18,7 @@ type UserRepositoryInterface interface {
 	GetUserByID(ctx context.Context, id int) (*dto.User, error)
 	GetUserByUserName(ctx context.Context, name string) (*dto.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*dto.User, error)
-
-	//ListUser(ctx context.Context, limit, offset int, orderBy string) ([]*dto.User, int, error)
+	ListUser(ctx context.Context, limit, offset int, orderBy string) ([]*ent.User, int, error)
 }
 
 type BookRepositoryInterface interface {
@@ -26,6 +26,7 @@ type BookRepositoryInterface interface {
 	DeleteBook(ctx context.Context, id int) error
 	UpdatedBook(ctx context.Context, id int, c *dto.Book) error
 	GetBookByName(ctx context.Context, name string) (*dto.Book, error)
-	ListBook(ctx context.Context, limit, offset int, orderBy string) ([]*dto.Book, error)
+	ListBook(ctx context.Context, limit, offset int, orderBy string) ([]*ent.Book, int, error)
 	GetBookByID(ctx context.Context, id int) (*dto.Book, error)
+	FetchBookData(limit, offset int, orderBy string, fetchAll bool) ([]*ent.Book, error)
 }

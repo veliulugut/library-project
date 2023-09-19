@@ -1,11 +1,15 @@
 package book
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"library/pkg/repository/dto"
+	"github.com/xuri/excelize/v2"
+	"library/ent"
 	"library/service/book"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 var _ Handler = (*Book)(nil)
@@ -27,7 +31,7 @@ type Book struct {
 // @Tags book
 // @Accept json
 // @Produce json
-// @Param user body book.CreateBookModel true "Create a new user"
+// @Param user body book.CreateBookModel true "Create a new book"
 // @Success 201
 // @Router /book [post]
 func (b *Book) CreateBook(c *gin.Context) {
@@ -119,9 +123,8 @@ func (b *Book) UpdatedBook(c *gin.Context) {
 // @Tags book
 // @Accept  json
 // @Produce  json
-// @Param user body dto.Book  true "get book by name"
 // @Param name   path string true "name"
-// @Success 204
+// @Success 204 {object} book.GetBookByName
 // @Router /book/{name} [get]
 func (b *Book) GetBookByName(c *gin.Context) {
 	name := c.Param("name")
@@ -142,9 +145,8 @@ func (b *Book) GetBookByName(c *gin.Context) {
 // @Tags book
 // @Accept  json
 // @Produce  json
-// @Param user body dto.Book  true "get book by id"
-// @Param name   path int true "id"
-// @Success 200
+// @Param id   path int true "id"
+// @Success 200 {object} book.GetBookModel "ok"
 // @Router /book/get/{id} [get]
 func (b *Book) GetBookByID(c *gin.Context) {
 	idParam := c.Param("id")
@@ -159,7 +161,7 @@ func (b *Book) GetBookByID(c *gin.Context) {
 		return
 	}
 
-	var books *dto.Book
+	var books *book.GetBookModel
 
 	if books, err = b.bookSrv.GetBookByID(c.Request.Context(), int(id)); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -167,4 +169,122 @@ func (b *Book) GetBookByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, books)
+}
+
+// ListBook godoc
+// @Summary get list of books
+// @Schemes
+// @Description
+// @Tags book
+// @Accept  json
+// @Produce  json
+// @Param pageNumber   query int false "pageNumber"
+// @Param pageSize  query int false "pageSize"
+// @Param isExport query bool false "isExport"
+// @Param onlyThisPageExport query bool false "onlyThisPageExport"
+// @Param orderBy query  string false "orderBy"
+// @Success 200 {object} book.ListBookResponse "ok"
+// @Router /books [get]
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization"
+func (b *Book) ListBook(c *gin.Context) {
+	limitQuery := c.DefaultQuery("pageSize", "10")
+	offsetQuery := c.DefaultQuery("pageNumber", "0")
+
+	isExport := c.DefaultQuery("isExport", "false")
+	onlyThisPageExport := c.DefaultQuery("onlyThisPageExport", "true")
+
+	fetchPartialData, _ := strconv.ParseBool(onlyThisPageExport)
+	orderBy := c.DefaultQuery("orderBy", "desc")
+
+	limit, err := strconv.Atoi(limitQuery)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter error"})
+		return
+	}
+
+	offset, err := strconv.Atoi(offsetQuery)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter error"})
+		return
+	}
+	if isExport == "false" {
+		b.ServeJson(c, limit, offset, orderBy)
+	} else if isExport == "true" {
+		b.ServeExcel(c, limit, offset, orderBy, !fetchPartialData)
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "invalid token"})
+	}
+}
+
+func (b *Book) ServeJson(c *gin.Context, limit, offset int, orderBy string) {
+	books, rowCount, err := b.bookSrv.ListBook(c.Request.Context(), limit, offset, orderBy)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var entBooks []*ent.Book
+	for _, getBook := range books {
+		entBook := &ent.Book{
+			//ID:        getBook.,
+			Title:     getBook.Title,
+			Author:    getBook.Author,
+			Genre:     getBook.Genre,
+			Height:    getBook.Height,
+			Publisher: getBook.Publisher,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		}
+		entBooks = append(entBooks, entBook)
+	}
+
+	response := book.ListBookResponse{
+		RowCount: rowCount,
+		Data:     entBooks,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (b *Book) ServeExcel(c *gin.Context, limit, offset int, orderBy string, fetchAllData bool) {
+	f := excelize.NewFile()
+
+	// Set column header
+	headers := []string{"ID", "Title", "Author", "Genre", "Height", "Publisher", "CreateAt", "UpdateAt"}
+	err := f.SetSheetRow("Sheet1", "A1", headers)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	books, err := b.bookSrv.FetchBookData(limit, offset, orderBy, fetchAllData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	for idx, book := range books {
+		row := []interface{}{book.ID, book.Title, book.Author, book.Genre, book.Height, book.Publisher, book.CreatedAt, book.UpdatedAt}
+		rowIndex := idx + 2 // Start from the second row
+		rowStart := fmt.Sprintf("A%d", rowIndex)
+		err := f.SetSheetRow("Sheet1", rowStart, row)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+	}
+
+	// Save the spreadsheet to a buffer
+	var buf bytes.Buffer
+	if err := f.Write(&buf); err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// Set headers for file download
+	downloadName := time.Now().UTC().Format("20060102150405.xlsx")
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Disposition", "attachment; filename="+downloadName)
+	c.Data(http.StatusOK, "application/octet-stream", buf.Bytes())
 }

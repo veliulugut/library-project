@@ -119,28 +119,25 @@ func (u *UserRepository) GetUserByEmail(ctx context.Context, email string) (*dto
 	return helper.DBUserToDTO(dbUser), nil
 }
 
-/*func (u *UserRepository) ListUser(ctx context.Context, limit, offset int, orderBy string) ([]*dto.User, int, error) {
+func (u *UserRepository) ListUser(ctx context.Context, limit, offset int, orderBy string) ([]*ent.User, int, error) {
 	var (
-		user []*ent.User
-		err  error
+		users []*ent.User
+		err   error
 	)
 
 	count, err := u.DBClient.User.Query().Count(ctx)
 	if err != nil {
-		return nil, 0, fmt.Errorf("user / count :%w", err)
+		return nil, 0, fmt.Errorf("count :%w", err)
 	}
 
 	if orderBy == "desc" {
-		user, err = u.DBClient.User.Query().Order(ent.Desc("created_at")).Offset(offset).Limit(limit).All(ctx)
-		if err != nil {
-			return nil, 0, fmt.Errorf("list all :%w", err)
-		}
+		users, err = u.DBClient.User.Query().Order(ent.Desc("id")).Limit(limit).Offset(offset).All(ctx)
 	} else {
-		user, err = u.DBClient.User.Query().Order(ent.Asc("created_at")).Offset(offset).Limit(limit).All(ctx)
+		users, err = u.DBClient.User.Query().Order(ent.Asc("id")).Limit(limit).Offset(offset).All(ctx)
 		if err != nil {
-			return nil, 0, fmt.Errorf("list all :%w", err)
+			return nil, 0, fmt.Errorf("list user :%w", err)
 		}
 	}
 
-	return user, count, nil
-}*/
+	return users, count, nil
+}

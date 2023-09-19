@@ -13,6 +13,41 @@ definitions:
       title:
         type: string
     type: object
+  book.GetBookByName:
+    properties:
+      author:
+        type: string
+      genre:
+        type: string
+      height:
+        type: string
+      publisher:
+        type: string
+      title:
+        type: string
+    type: object
+  book.GetBookModel:
+    properties:
+      author:
+        type: string
+      genre:
+        type: string
+      height:
+        type: string
+      publisher:
+        type: string
+      title:
+        type: string
+    type: object
+  book.ListBookResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/ent.Book'
+        type: array
+      rowCount:
+        type: integer
+    type: object
   book.UpdateBookModel:
     properties:
       author:
@@ -26,25 +61,31 @@ definitions:
       title:
         type: string
     type: object
-  dto.Book:
+  ent.Book:
     properties:
       author:
+        description: Author holds the value of the "author" field.
         type: string
       created_at:
-        example: "2006-01-02T15:04:05Z"
+        description: CreatedAt holds the value of the "created_at" field.
         type: string
       genre:
+        description: Genre holds the value of the "genre" field.
         type: string
       height:
+        description: Height holds the value of the "height" field.
         type: string
       id:
+        description: ID of the ent.
         type: integer
       publisher:
+        description: Publisher holds the value of the "publisher" field.
         type: string
       title:
+        description: Title holds the value of the "title" field.
         type: string
       updated_at:
-        example: "2006-01-02T15:04:05Z"
+        description: UpdatedAt holds the value of the "updated_at" field.
         type: string
     type: object
   login.ReqLogin:
@@ -104,7 +145,7 @@ paths:
       - application/json
       description: create a book
       parameters:
-      - description: Create a new user
+      - description: Create a new book
         in: body
         name: user
         required: true
@@ -160,12 +201,6 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: get book by name
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Book'
       - description: name
         in: path
         name: name
@@ -176,6 +211,8 @@ paths:
       responses:
         "204":
           description: No Content
+          schema:
+            $ref: '#/definitions/book.GetBookByName'
       summary: get book by name
       tags:
       - book
@@ -184,23 +221,61 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: get book by id
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Book'
       - description: id
         in: path
-        name: name
+        name: id
         required: true
         type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: ok
+          schema:
+            $ref: '#/definitions/book.GetBookModel'
       summary: get book by id
+      tags:
+      - book
+  /books:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: pageNumber
+        in: query
+        name: pageNumber
+        type: integer
+      - description: pageSize
+        in: query
+        name: pageSize
+        type: integer
+      - description: isExport
+        in: query
+        name: isExport
+        type: boolean
+      - description: onlyThisPageExport
+        in: query
+        name: onlyThisPageExport
+        type: boolean
+      - description: orderBy
+        in: query
+        name: orderBy
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/book.ListBookResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get list of books
       tags:
       - book
   /login:
