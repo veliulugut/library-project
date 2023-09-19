@@ -6,29 +6,11 @@ import (
 	"fmt"
 	"library/ent"
 	"log"
+	"math/rand"
 	"os"
 )
 
-type Book struct {
-	db *ent.Client
-}
-
-func NewBookData(db *ent.Client) *Book {
-	return &Book{
-		db: db,
-	}
-}
-
-// Title,Author,Genre,Height,Publisher
-type BookModel struct {
-	Title     string `json:"title"`
-	Author    string `json:"author"`
-	Genre     string `json:"genre"`
-	Height    string `json:"height"`
-	Publisher string `json:"publisher"`
-}
-
-func (a *Book) BookData() error {
+func CreateTestData(db *ent.Client) error {
 	fd, err := os.Open("books.csv")
 	if err != nil {
 		fmt.Println(err)
@@ -46,31 +28,30 @@ func (a *Book) BookData() error {
 		return fmt.Errorf("book data / read all :%w", err)
 	}
 
-	bookList := make([]BookModel, 0, len(records)-1)
 	for _, row := range records[1:] {
-
-		bookList = append(bookList, BookModel{
-			Title:     row[0],
-			Author:    row[1],
-			Genre:     row[2],
-			Height:    row[3],
-			Publisher: row[4],
-		})
-
-	}
-
-	for i := range bookList {
-		result, err := a.db.Book.Create().SetTitle(bookList[i].Title).SetAuthor(bookList[i].Author).
-			SetGenre(bookList[i].Genre).SetHeight(bookList[i].Height).SetPublisher(bookList[i].Publisher).Save(context.Background())
+		_, err := db.Book.Create().SetTitle(row[0]).SetAuthor(row[1]).
+			SetGenre(row[2]).SetHeight(row[3]).SetPublisher(row[4]).Save(context.Background())
 
 		if err != nil {
 			fmt.Println(err)
 			return fmt.Errorf("book data :%w", err)
 		}
 
-		fmt.Println(result)
 	}
-
+	log.Println("test data create")
 	return nil
 
+}
+
+func GenerateRandomOTPCode() string {
+	chars := "ABCDEFGHJKMNPQRSTUVWXYZ123456789"
+
+	result := ""
+
+	for i := 0; i < 6; i++ {
+		randomIndex := rand.Intn(len(chars))
+		result += string(chars[randomIndex])
+	}
+
+	return result
 }

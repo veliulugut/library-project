@@ -7,6 +7,8 @@ import (
 	"library/cmd/api/handler/v1/login"
 	"library/cmd/api/handler/v1/user"
 	"library/ent"
+	"library/pkg/utils"
+	"os"
 )
 
 func New(port int) *Server {
@@ -42,6 +44,14 @@ func (s *Server) Init() error {
 }
 
 func (s *Server) Run() error {
+	env, _ := os.LookupEnv("TEST_DATA")
+	if env == "TRUE" || env == "true" {
+		err := utils.CreateTestData(s.dbClient)
+		if err != nil {
+			return fmt.Errorf("server run / create test data :%w", err)
+		}
+	}
+
 	err := s.router.Run(fmt.Sprintf(":%d", s.port))
 	if err != nil {
 		return fmt.Errorf("server run :%w", err)
