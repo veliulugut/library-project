@@ -11,6 +11,7 @@ import (
 	"library/ent/migrate"
 
 	"library/ent/book"
+	"library/ent/reset_password_validation"
 	"library/ent/user"
 
 	"entgo.io/ent"
@@ -27,6 +28,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Book is the client for interacting with the Book builders.
 	Book *BookClient
+	// Reset_Password_Validation is the client for interacting with the Reset_Password_Validation builders.
+	Reset_Password_Validation *ResetPasswordValidationClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -43,6 +46,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Book = NewBookClient(c.config)
+	c.Reset_Password_Validation = NewResetPasswordValidationClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -124,10 +128,11 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Book:   NewBookClient(cfg),
-		User:   NewUserClient(cfg),
+		ctx:                       ctx,
+		config:                    cfg,
+		Book:                      NewBookClient(cfg),
+		Reset_Password_Validation: NewResetPasswordValidationClient(cfg),
+		User:                      NewUserClient(cfg),
 	}, nil
 }
 
@@ -145,10 +150,11 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Book:   NewBookClient(cfg),
-		User:   NewUserClient(cfg),
+		ctx:                       ctx,
+		config:                    cfg,
+		Book:                      NewBookClient(cfg),
+		Reset_Password_Validation: NewResetPasswordValidationClient(cfg),
+		User:                      NewUserClient(cfg),
 	}, nil
 }
 
@@ -178,6 +184,7 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Book.Use(hooks...)
+	c.Reset_Password_Validation.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
@@ -185,6 +192,7 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.Book.Intercept(interceptors...)
+	c.Reset_Password_Validation.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
 }
 
@@ -193,6 +201,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *BookMutation:
 		return c.Book.mutate(ctx, m)
+	case *ResetPasswordValidationMutation:
+		return c.Reset_Password_Validation.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -318,6 +328,124 @@ func (c *BookClient) mutate(ctx context.Context, m *BookMutation) (Value, error)
 	}
 }
 
+// ResetPasswordValidationClient is a client for the Reset_Password_Validation schema.
+type ResetPasswordValidationClient struct {
+	config
+}
+
+// NewResetPasswordValidationClient returns a client for the Reset_Password_Validation from the given config.
+func NewResetPasswordValidationClient(c config) *ResetPasswordValidationClient {
+	return &ResetPasswordValidationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `reset_password_validation.Hooks(f(g(h())))`.
+func (c *ResetPasswordValidationClient) Use(hooks ...Hook) {
+	c.hooks.Reset_Password_Validation = append(c.hooks.Reset_Password_Validation, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `reset_password_validation.Intercept(f(g(h())))`.
+func (c *ResetPasswordValidationClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Reset_Password_Validation = append(c.inters.Reset_Password_Validation, interceptors...)
+}
+
+// Create returns a builder for creating a Reset_Password_Validation entity.
+func (c *ResetPasswordValidationClient) Create() *ResetPasswordValidationCreate {
+	mutation := newResetPasswordValidationMutation(c.config, OpCreate)
+	return &ResetPasswordValidationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Reset_Password_Validation entities.
+func (c *ResetPasswordValidationClient) CreateBulk(builders ...*ResetPasswordValidationCreate) *ResetPasswordValidationCreateBulk {
+	return &ResetPasswordValidationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Reset_Password_Validation.
+func (c *ResetPasswordValidationClient) Update() *ResetPasswordValidationUpdate {
+	mutation := newResetPasswordValidationMutation(c.config, OpUpdate)
+	return &ResetPasswordValidationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ResetPasswordValidationClient) UpdateOne(rpv *Reset_Password_Validation) *ResetPasswordValidationUpdateOne {
+	mutation := newResetPasswordValidationMutation(c.config, OpUpdateOne, withReset_Password_Validation(rpv))
+	return &ResetPasswordValidationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ResetPasswordValidationClient) UpdateOneID(id int) *ResetPasswordValidationUpdateOne {
+	mutation := newResetPasswordValidationMutation(c.config, OpUpdateOne, withReset_Password_ValidationID(id))
+	return &ResetPasswordValidationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Reset_Password_Validation.
+func (c *ResetPasswordValidationClient) Delete() *ResetPasswordValidationDelete {
+	mutation := newResetPasswordValidationMutation(c.config, OpDelete)
+	return &ResetPasswordValidationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ResetPasswordValidationClient) DeleteOne(rpv *Reset_Password_Validation) *ResetPasswordValidationDeleteOne {
+	return c.DeleteOneID(rpv.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ResetPasswordValidationClient) DeleteOneID(id int) *ResetPasswordValidationDeleteOne {
+	builder := c.Delete().Where(reset_password_validation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ResetPasswordValidationDeleteOne{builder}
+}
+
+// Query returns a query builder for Reset_Password_Validation.
+func (c *ResetPasswordValidationClient) Query() *ResetPasswordValidationQuery {
+	return &ResetPasswordValidationQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeResetPasswordValidation},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Reset_Password_Validation entity by its id.
+func (c *ResetPasswordValidationClient) Get(ctx context.Context, id int) (*Reset_Password_Validation, error) {
+	return c.Query().Where(reset_password_validation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ResetPasswordValidationClient) GetX(ctx context.Context, id int) *Reset_Password_Validation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ResetPasswordValidationClient) Hooks() []Hook {
+	return c.hooks.Reset_Password_Validation
+}
+
+// Interceptors returns the client interceptors.
+func (c *ResetPasswordValidationClient) Interceptors() []Interceptor {
+	return c.inters.Reset_Password_Validation
+}
+
+func (c *ResetPasswordValidationClient) mutate(ctx context.Context, m *ResetPasswordValidationMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ResetPasswordValidationCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ResetPasswordValidationUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ResetPasswordValidationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ResetPasswordValidationDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Reset_Password_Validation mutation op: %q", m.Op())
+	}
+}
+
 // UserClient is a client for the User schema.
 type UserClient struct {
 	config
@@ -439,10 +567,10 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Book, User []ent.Hook
+		Book, Reset_Password_Validation, User []ent.Hook
 	}
 	inters struct {
-		Book, User []ent.Interceptor
+		Book, Reset_Password_Validation, User []ent.Interceptor
 	}
 )
 

@@ -16,6 +16,8 @@ type Tx struct {
 	config
 	// Book is the client for interacting with the Book builders.
 	Book *BookClient
+	// Reset_Password_Validation is the client for interacting with the Reset_Password_Validation builders.
+	Reset_Password_Validation *ResetPasswordValidationClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 
@@ -150,6 +152,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Book = NewBookClient(tx.config)
+	tx.Reset_Password_Validation = NewResetPasswordValidationClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }
 

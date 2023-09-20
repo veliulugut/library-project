@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"library/ent/book"
+	"library/ent/reset_password_validation"
 	"library/ent/user"
 	"reflect"
 	"sync"
@@ -74,8 +75,9 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			book.Table: book.ValidColumn,
-			user.Table: user.ValidColumn,
+			book.Table:                      book.ValidColumn,
+			reset_password_validation.Table: reset_password_validation.ValidColumn,
+			user.Table:                      user.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

@@ -25,6 +25,19 @@ var (
 		Columns:    BooksColumns,
 		PrimaryKey: []*schema.Column{BooksColumns[0]},
 	}
+	// ResetPasswordValidationsColumns holds the columns for the "reset_password_validations" table.
+	ResetPasswordValidationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "email", Type: field.TypeString},
+		{Name: "expire_date", Type: field.TypeTime},
+		{Name: "code", Type: field.TypeString},
+	}
+	// ResetPasswordValidationsTable holds the schema information for the "reset_password_validations" table.
+	ResetPasswordValidationsTable = &schema.Table{
+		Name:       "reset_password_validations",
+		Columns:    ResetPasswordValidationsColumns,
+		PrimaryKey: []*schema.Column{ResetPasswordValidationsColumns[0]},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -43,6 +56,7 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BooksTable,
+		ResetPasswordValidationsTable,
 		UsersTable,
 	}
 )
