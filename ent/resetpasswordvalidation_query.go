@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 	"library/ent/predicate"
-	"library/ent/reset_password_validation"
+	"library/ent/resetpasswordvalidation"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
@@ -14,20 +14,20 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ResetPasswordValidationQuery is the builder for querying Reset_Password_Validation entities.
+// ResetPasswordValidationQuery is the builder for querying ResetPasswordValidation entities.
 type ResetPasswordValidationQuery struct {
 	config
 	ctx        *QueryContext
-	order      []reset_password_validation.OrderOption
+	order      []resetpasswordvalidation.OrderOption
 	inters     []Interceptor
-	predicates []predicate.Reset_Password_Validation
+	predicates []predicate.ResetPasswordValidation
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
 // Where adds a new predicate for the ResetPasswordValidationQuery builder.
-func (rpvq *ResetPasswordValidationQuery) Where(ps ...predicate.Reset_Password_Validation) *ResetPasswordValidationQuery {
+func (rpvq *ResetPasswordValidationQuery) Where(ps ...predicate.ResetPasswordValidation) *ResetPasswordValidationQuery {
 	rpvq.predicates = append(rpvq.predicates, ps...)
 	return rpvq
 }
@@ -52,26 +52,26 @@ func (rpvq *ResetPasswordValidationQuery) Unique(unique bool) *ResetPasswordVali
 }
 
 // Order specifies how the records should be ordered.
-func (rpvq *ResetPasswordValidationQuery) Order(o ...reset_password_validation.OrderOption) *ResetPasswordValidationQuery {
+func (rpvq *ResetPasswordValidationQuery) Order(o ...resetpasswordvalidation.OrderOption) *ResetPasswordValidationQuery {
 	rpvq.order = append(rpvq.order, o...)
 	return rpvq
 }
 
-// First returns the first Reset_Password_Validation entity from the query.
-// Returns a *NotFoundError when no Reset_Password_Validation was found.
-func (rpvq *ResetPasswordValidationQuery) First(ctx context.Context) (*Reset_Password_Validation, error) {
+// First returns the first ResetPasswordValidation entity from the query.
+// Returns a *NotFoundError when no ResetPasswordValidation was found.
+func (rpvq *ResetPasswordValidationQuery) First(ctx context.Context) (*ResetPasswordValidation, error) {
 	nodes, err := rpvq.Limit(1).All(setContextOp(ctx, rpvq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{reset_password_validation.Label}
+		return nil, &NotFoundError{resetpasswordvalidation.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (rpvq *ResetPasswordValidationQuery) FirstX(ctx context.Context) *Reset_Password_Validation {
+func (rpvq *ResetPasswordValidationQuery) FirstX(ctx context.Context) *ResetPasswordValidation {
 	node, err := rpvq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -79,15 +79,15 @@ func (rpvq *ResetPasswordValidationQuery) FirstX(ctx context.Context) *Reset_Pas
 	return node
 }
 
-// FirstID returns the first Reset_Password_Validation ID from the query.
-// Returns a *NotFoundError when no Reset_Password_Validation ID was found.
+// FirstID returns the first ResetPasswordValidation ID from the query.
+// Returns a *NotFoundError when no ResetPasswordValidation ID was found.
 func (rpvq *ResetPasswordValidationQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = rpvq.Limit(1).IDs(setContextOp(ctx, rpvq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{reset_password_validation.Label}
+		err = &NotFoundError{resetpasswordvalidation.Label}
 		return
 	}
 	return ids[0], nil
@@ -102,10 +102,10 @@ func (rpvq *ResetPasswordValidationQuery) FirstIDX(ctx context.Context) int {
 	return id
 }
 
-// Only returns a single Reset_Password_Validation entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when more than one Reset_Password_Validation entity is found.
-// Returns a *NotFoundError when no Reset_Password_Validation entities are found.
-func (rpvq *ResetPasswordValidationQuery) Only(ctx context.Context) (*Reset_Password_Validation, error) {
+// Only returns a single ResetPasswordValidation entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when more than one ResetPasswordValidation entity is found.
+// Returns a *NotFoundError when no ResetPasswordValidation entities are found.
+func (rpvq *ResetPasswordValidationQuery) Only(ctx context.Context) (*ResetPasswordValidation, error) {
 	nodes, err := rpvq.Limit(2).All(setContextOp(ctx, rpvq.ctx, "Only"))
 	if err != nil {
 		return nil, err
@@ -114,14 +114,14 @@ func (rpvq *ResetPasswordValidationQuery) Only(ctx context.Context) (*Reset_Pass
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{reset_password_validation.Label}
+		return nil, &NotFoundError{resetpasswordvalidation.Label}
 	default:
-		return nil, &NotSingularError{reset_password_validation.Label}
+		return nil, &NotSingularError{resetpasswordvalidation.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (rpvq *ResetPasswordValidationQuery) OnlyX(ctx context.Context) *Reset_Password_Validation {
+func (rpvq *ResetPasswordValidationQuery) OnlyX(ctx context.Context) *ResetPasswordValidation {
 	node, err := rpvq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -129,8 +129,8 @@ func (rpvq *ResetPasswordValidationQuery) OnlyX(ctx context.Context) *Reset_Pass
 	return node
 }
 
-// OnlyID is like Only, but returns the only Reset_Password_Validation ID in the query.
-// Returns a *NotSingularError when more than one Reset_Password_Validation ID is found.
+// OnlyID is like Only, but returns the only ResetPasswordValidation ID in the query.
+// Returns a *NotSingularError when more than one ResetPasswordValidation ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (rpvq *ResetPasswordValidationQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
@@ -141,9 +141,9 @@ func (rpvq *ResetPasswordValidationQuery) OnlyID(ctx context.Context) (id int, e
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{reset_password_validation.Label}
+		err = &NotFoundError{resetpasswordvalidation.Label}
 	default:
-		err = &NotSingularError{reset_password_validation.Label}
+		err = &NotSingularError{resetpasswordvalidation.Label}
 	}
 	return
 }
@@ -157,18 +157,18 @@ func (rpvq *ResetPasswordValidationQuery) OnlyIDX(ctx context.Context) int {
 	return id
 }
 
-// All executes the query and returns a list of Reset_Password_Validations.
-func (rpvq *ResetPasswordValidationQuery) All(ctx context.Context) ([]*Reset_Password_Validation, error) {
+// All executes the query and returns a list of ResetPasswordValidations.
+func (rpvq *ResetPasswordValidationQuery) All(ctx context.Context) ([]*ResetPasswordValidation, error) {
 	ctx = setContextOp(ctx, rpvq.ctx, "All")
 	if err := rpvq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	qr := querierAll[[]*Reset_Password_Validation, *ResetPasswordValidationQuery]()
-	return withInterceptors[[]*Reset_Password_Validation](ctx, rpvq, qr, rpvq.inters)
+	qr := querierAll[[]*ResetPasswordValidation, *ResetPasswordValidationQuery]()
+	return withInterceptors[[]*ResetPasswordValidation](ctx, rpvq, qr, rpvq.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (rpvq *ResetPasswordValidationQuery) AllX(ctx context.Context) []*Reset_Password_Validation {
+func (rpvq *ResetPasswordValidationQuery) AllX(ctx context.Context) []*ResetPasswordValidation {
 	nodes, err := rpvq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -176,13 +176,13 @@ func (rpvq *ResetPasswordValidationQuery) AllX(ctx context.Context) []*Reset_Pas
 	return nodes
 }
 
-// IDs executes the query and returns a list of Reset_Password_Validation IDs.
+// IDs executes the query and returns a list of ResetPasswordValidation IDs.
 func (rpvq *ResetPasswordValidationQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if rpvq.ctx.Unique == nil && rpvq.path != nil {
 		rpvq.Unique(true)
 	}
 	ctx = setContextOp(ctx, rpvq.ctx, "IDs")
-	if err = rpvq.Select(reset_password_validation.FieldID).Scan(ctx, &ids); err != nil {
+	if err = rpvq.Select(resetpasswordvalidation.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
@@ -246,9 +246,9 @@ func (rpvq *ResetPasswordValidationQuery) Clone() *ResetPasswordValidationQuery 
 	return &ResetPasswordValidationQuery{
 		config:     rpvq.config,
 		ctx:        rpvq.ctx.Clone(),
-		order:      append([]reset_password_validation.OrderOption{}, rpvq.order...),
+		order:      append([]resetpasswordvalidation.OrderOption{}, rpvq.order...),
 		inters:     append([]Interceptor{}, rpvq.inters...),
-		predicates: append([]predicate.Reset_Password_Validation{}, rpvq.predicates...),
+		predicates: append([]predicate.ResetPasswordValidation{}, rpvq.predicates...),
 		// clone intermediate query.
 		sql:  rpvq.sql.Clone(),
 		path: rpvq.path,
@@ -266,14 +266,14 @@ func (rpvq *ResetPasswordValidationQuery) Clone() *ResetPasswordValidationQuery 
 //	}
 //
 //	client.ResetPasswordValidation.Query().
-//		GroupBy(reset_password_validation.FieldEmail).
+//		GroupBy(resetpasswordvalidation.FieldEmail).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (rpvq *ResetPasswordValidationQuery) GroupBy(field string, fields ...string) *ResetPasswordValidationGroupBy {
 	rpvq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &ResetPasswordValidationGroupBy{build: rpvq}
 	grbuild.flds = &rpvq.ctx.Fields
-	grbuild.label = reset_password_validation.Label
+	grbuild.label = resetpasswordvalidation.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
 }
@@ -288,12 +288,12 @@ func (rpvq *ResetPasswordValidationQuery) GroupBy(field string, fields ...string
 //	}
 //
 //	client.ResetPasswordValidation.Query().
-//		Select(reset_password_validation.FieldEmail).
+//		Select(resetpasswordvalidation.FieldEmail).
 //		Scan(ctx, &v)
 func (rpvq *ResetPasswordValidationQuery) Select(fields ...string) *ResetPasswordValidationSelect {
 	rpvq.ctx.Fields = append(rpvq.ctx.Fields, fields...)
 	sbuild := &ResetPasswordValidationSelect{ResetPasswordValidationQuery: rpvq}
-	sbuild.label = reset_password_validation.Label
+	sbuild.label = resetpasswordvalidation.Label
 	sbuild.flds, sbuild.scan = &rpvq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
@@ -315,7 +315,7 @@ func (rpvq *ResetPasswordValidationQuery) prepareQuery(ctx context.Context) erro
 		}
 	}
 	for _, f := range rpvq.ctx.Fields {
-		if !reset_password_validation.ValidColumn(f) {
+		if !resetpasswordvalidation.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -329,16 +329,16 @@ func (rpvq *ResetPasswordValidationQuery) prepareQuery(ctx context.Context) erro
 	return nil
 }
 
-func (rpvq *ResetPasswordValidationQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Reset_Password_Validation, error) {
+func (rpvq *ResetPasswordValidationQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*ResetPasswordValidation, error) {
 	var (
-		nodes = []*Reset_Password_Validation{}
+		nodes = []*ResetPasswordValidation{}
 		_spec = rpvq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
-		return (*Reset_Password_Validation).scanValues(nil, columns)
+		return (*ResetPasswordValidation).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
-		node := &Reset_Password_Validation{config: rpvq.config}
+		node := &ResetPasswordValidation{config: rpvq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
@@ -364,7 +364,7 @@ func (rpvq *ResetPasswordValidationQuery) sqlCount(ctx context.Context) (int, er
 }
 
 func (rpvq *ResetPasswordValidationQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(reset_password_validation.Table, reset_password_validation.Columns, sqlgraph.NewFieldSpec(reset_password_validation.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewQuerySpec(resetpasswordvalidation.Table, resetpasswordvalidation.Columns, sqlgraph.NewFieldSpec(resetpasswordvalidation.FieldID, field.TypeInt))
 	_spec.From = rpvq.sql
 	if unique := rpvq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
@@ -373,9 +373,9 @@ func (rpvq *ResetPasswordValidationQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := rpvq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, reset_password_validation.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, resetpasswordvalidation.FieldID)
 		for i := range fields {
-			if fields[i] != reset_password_validation.FieldID {
+			if fields[i] != resetpasswordvalidation.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -405,10 +405,10 @@ func (rpvq *ResetPasswordValidationQuery) querySpec() *sqlgraph.QuerySpec {
 
 func (rpvq *ResetPasswordValidationQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(rpvq.driver.Dialect())
-	t1 := builder.Table(reset_password_validation.Table)
+	t1 := builder.Table(resetpasswordvalidation.Table)
 	columns := rpvq.ctx.Fields
 	if len(columns) == 0 {
-		columns = reset_password_validation.Columns
+		columns = resetpasswordvalidation.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if rpvq.sql != nil {
@@ -435,7 +435,7 @@ func (rpvq *ResetPasswordValidationQuery) sqlQuery(ctx context.Context) *sql.Sel
 	return selector
 }
 
-// ResetPasswordValidationGroupBy is the group-by builder for Reset_Password_Validation entities.
+// ResetPasswordValidationGroupBy is the group-by builder for ResetPasswordValidation entities.
 type ResetPasswordValidationGroupBy struct {
 	selector
 	build *ResetPasswordValidationQuery

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"library/ent/book"
 	"library/ent/predicate"
-	"library/ent/reset_password_validation"
+	"library/ent/resetpasswordvalidation"
 	"library/ent/user"
 	"sync"
 	"time"
@@ -27,7 +27,7 @@ const (
 
 	// Node types.
 	TypeBook                    = "Book"
-	TypeResetPasswordValidation = "Reset_Password_Validation"
+	TypeResetPasswordValidation = "ResetPasswordValidation"
 	TypeUser                    = "User"
 )
 
@@ -681,7 +681,7 @@ func (m *BookMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Book edge %s", name)
 }
 
-// ResetPasswordValidationMutation represents an operation that mutates the Reset_Password_Validation nodes in the graph.
+// ResetPasswordValidationMutation represents an operation that mutates the ResetPasswordValidation nodes in the graph.
 type ResetPasswordValidationMutation struct {
 	config
 	op            Op
@@ -692,17 +692,17 @@ type ResetPasswordValidationMutation struct {
 	code          *string
 	clearedFields map[string]struct{}
 	done          bool
-	oldValue      func(context.Context) (*Reset_Password_Validation, error)
-	predicates    []predicate.Reset_Password_Validation
+	oldValue      func(context.Context) (*ResetPasswordValidation, error)
+	predicates    []predicate.ResetPasswordValidation
 }
 
 var _ ent.Mutation = (*ResetPasswordValidationMutation)(nil)
 
-// resetPasswordValidationOption allows management of the mutation configuration using functional options.
-type resetPasswordValidationOption func(*ResetPasswordValidationMutation)
+// resetpasswordvalidationOption allows management of the mutation configuration using functional options.
+type resetpasswordvalidationOption func(*ResetPasswordValidationMutation)
 
-// newResetPasswordValidationMutation creates new mutation for the Reset_Password_Validation entity.
-func newResetPasswordValidationMutation(c config, op Op, opts ...resetPasswordValidationOption) *ResetPasswordValidationMutation {
+// newResetPasswordValidationMutation creates new mutation for the ResetPasswordValidation entity.
+func newResetPasswordValidationMutation(c config, op Op, opts ...resetpasswordvalidationOption) *ResetPasswordValidationMutation {
 	m := &ResetPasswordValidationMutation{
 		config:        c,
 		op:            op,
@@ -715,20 +715,20 @@ func newResetPasswordValidationMutation(c config, op Op, opts ...resetPasswordVa
 	return m
 }
 
-// withReset_Password_ValidationID sets the ID field of the mutation.
-func withReset_Password_ValidationID(id int) resetPasswordValidationOption {
+// withResetPasswordValidationID sets the ID field of the mutation.
+func withResetPasswordValidationID(id int) resetpasswordvalidationOption {
 	return func(m *ResetPasswordValidationMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *Reset_Password_Validation
+			value *ResetPasswordValidation
 		)
-		m.oldValue = func(ctx context.Context) (*Reset_Password_Validation, error) {
+		m.oldValue = func(ctx context.Context) (*ResetPasswordValidation, error) {
 			once.Do(func() {
 				if m.done {
 					err = errors.New("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().Reset_Password_Validation.Get(ctx, id)
+					value, err = m.Client().ResetPasswordValidation.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -737,10 +737,10 @@ func withReset_Password_ValidationID(id int) resetPasswordValidationOption {
 	}
 }
 
-// withReset_Password_Validation sets the old Reset_Password_Validation of the mutation.
-func withReset_Password_Validation(node *Reset_Password_Validation) resetPasswordValidationOption {
+// withResetPasswordValidation sets the old ResetPasswordValidation of the mutation.
+func withResetPasswordValidation(node *ResetPasswordValidation) resetpasswordvalidationOption {
 	return func(m *ResetPasswordValidationMutation) {
-		m.oldValue = func(context.Context) (*Reset_Password_Validation, error) {
+		m.oldValue = func(context.Context) (*ResetPasswordValidation, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -788,7 +788,7 @@ func (m *ResetPasswordValidationMutation) IDs(ctx context.Context) ([]int, error
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Reset_Password_Validation.Query().Where(m.predicates...).IDs(ctx)
+		return m.Client().ResetPasswordValidation.Query().Where(m.predicates...).IDs(ctx)
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
@@ -808,8 +808,8 @@ func (m *ResetPasswordValidationMutation) Email() (r string, exists bool) {
 	return *v, true
 }
 
-// OldEmail returns the old "email" field's value of the Reset_Password_Validation entity.
-// If the Reset_Password_Validation object wasn't provided to the builder, the object is fetched from the database.
+// OldEmail returns the old "email" field's value of the ResetPasswordValidation entity.
+// If the ResetPasswordValidation object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ResetPasswordValidationMutation) OldEmail(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
@@ -844,8 +844,8 @@ func (m *ResetPasswordValidationMutation) ExpireDate() (r time.Time, exists bool
 	return *v, true
 }
 
-// OldExpireDate returns the old "expire_date" field's value of the Reset_Password_Validation entity.
-// If the Reset_Password_Validation object wasn't provided to the builder, the object is fetched from the database.
+// OldExpireDate returns the old "expire_date" field's value of the ResetPasswordValidation entity.
+// If the ResetPasswordValidation object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ResetPasswordValidationMutation) OldExpireDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
@@ -880,8 +880,8 @@ func (m *ResetPasswordValidationMutation) Code() (r string, exists bool) {
 	return *v, true
 }
 
-// OldCode returns the old "code" field's value of the Reset_Password_Validation entity.
-// If the Reset_Password_Validation object wasn't provided to the builder, the object is fetched from the database.
+// OldCode returns the old "code" field's value of the ResetPasswordValidation entity.
+// If the ResetPasswordValidation object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
 func (m *ResetPasswordValidationMutation) OldCode(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
@@ -903,14 +903,14 @@ func (m *ResetPasswordValidationMutation) ResetCode() {
 }
 
 // Where appends a list predicates to the ResetPasswordValidationMutation builder.
-func (m *ResetPasswordValidationMutation) Where(ps ...predicate.Reset_Password_Validation) {
+func (m *ResetPasswordValidationMutation) Where(ps ...predicate.ResetPasswordValidation) {
 	m.predicates = append(m.predicates, ps...)
 }
 
 // WhereP appends storage-level predicates to the ResetPasswordValidationMutation builder. Using this method,
 // users can use type-assertion to append predicates that do not depend on any generated package.
 func (m *ResetPasswordValidationMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.Reset_Password_Validation, len(ps))
+	p := make([]predicate.ResetPasswordValidation, len(ps))
 	for i := range ps {
 		p[i] = ps[i]
 	}
@@ -927,7 +927,7 @@ func (m *ResetPasswordValidationMutation) SetOp(op Op) {
 	m.op = op
 }
 
-// Type returns the node type of this mutation (Reset_Password_Validation).
+// Type returns the node type of this mutation (ResetPasswordValidation).
 func (m *ResetPasswordValidationMutation) Type() string {
 	return m.typ
 }
@@ -938,13 +938,13 @@ func (m *ResetPasswordValidationMutation) Type() string {
 func (m *ResetPasswordValidationMutation) Fields() []string {
 	fields := make([]string, 0, 3)
 	if m.email != nil {
-		fields = append(fields, reset_password_validation.FieldEmail)
+		fields = append(fields, resetpasswordvalidation.FieldEmail)
 	}
 	if m.expire_date != nil {
-		fields = append(fields, reset_password_validation.FieldExpireDate)
+		fields = append(fields, resetpasswordvalidation.FieldExpireDate)
 	}
 	if m.code != nil {
-		fields = append(fields, reset_password_validation.FieldCode)
+		fields = append(fields, resetpasswordvalidation.FieldCode)
 	}
 	return fields
 }
@@ -954,11 +954,11 @@ func (m *ResetPasswordValidationMutation) Fields() []string {
 // schema.
 func (m *ResetPasswordValidationMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case reset_password_validation.FieldEmail:
+	case resetpasswordvalidation.FieldEmail:
 		return m.Email()
-	case reset_password_validation.FieldExpireDate:
+	case resetpasswordvalidation.FieldExpireDate:
 		return m.ExpireDate()
-	case reset_password_validation.FieldCode:
+	case resetpasswordvalidation.FieldCode:
 		return m.Code()
 	}
 	return nil, false
@@ -969,14 +969,14 @@ func (m *ResetPasswordValidationMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *ResetPasswordValidationMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case reset_password_validation.FieldEmail:
+	case resetpasswordvalidation.FieldEmail:
 		return m.OldEmail(ctx)
-	case reset_password_validation.FieldExpireDate:
+	case resetpasswordvalidation.FieldExpireDate:
 		return m.OldExpireDate(ctx)
-	case reset_password_validation.FieldCode:
+	case resetpasswordvalidation.FieldCode:
 		return m.OldCode(ctx)
 	}
-	return nil, fmt.Errorf("unknown Reset_Password_Validation field %s", name)
+	return nil, fmt.Errorf("unknown ResetPasswordValidation field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
@@ -984,21 +984,21 @@ func (m *ResetPasswordValidationMutation) OldField(ctx context.Context, name str
 // type.
 func (m *ResetPasswordValidationMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case reset_password_validation.FieldEmail:
+	case resetpasswordvalidation.FieldEmail:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEmail(v)
 		return nil
-	case reset_password_validation.FieldExpireDate:
+	case resetpasswordvalidation.FieldExpireDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetExpireDate(v)
 		return nil
-	case reset_password_validation.FieldCode:
+	case resetpasswordvalidation.FieldCode:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -1006,7 +1006,7 @@ func (m *ResetPasswordValidationMutation) SetField(name string, value ent.Value)
 		m.SetCode(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Reset_Password_Validation field %s", name)
+	return fmt.Errorf("unknown ResetPasswordValidation field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
@@ -1028,7 +1028,7 @@ func (m *ResetPasswordValidationMutation) AddedField(name string) (ent.Value, bo
 func (m *ResetPasswordValidationMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown Reset_Password_Validation numeric field %s", name)
+	return fmt.Errorf("unknown ResetPasswordValidation numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
@@ -1047,24 +1047,24 @@ func (m *ResetPasswordValidationMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *ResetPasswordValidationMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown Reset_Password_Validation nullable field %s", name)
+	return fmt.Errorf("unknown ResetPasswordValidation nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *ResetPasswordValidationMutation) ResetField(name string) error {
 	switch name {
-	case reset_password_validation.FieldEmail:
+	case resetpasswordvalidation.FieldEmail:
 		m.ResetEmail()
 		return nil
-	case reset_password_validation.FieldExpireDate:
+	case resetpasswordvalidation.FieldExpireDate:
 		m.ResetExpireDate()
 		return nil
-	case reset_password_validation.FieldCode:
+	case resetpasswordvalidation.FieldCode:
 		m.ResetCode()
 		return nil
 	}
-	return fmt.Errorf("unknown Reset_Password_Validation field %s", name)
+	return fmt.Errorf("unknown ResetPasswordValidation field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
@@ -1106,13 +1106,13 @@ func (m *ResetPasswordValidationMutation) EdgeCleared(name string) bool {
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *ResetPasswordValidationMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown Reset_Password_Validation unique edge %s", name)
+	return fmt.Errorf("unknown ResetPasswordValidation unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *ResetPasswordValidationMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown Reset_Password_Validation edge %s", name)
+	return fmt.Errorf("unknown ResetPasswordValidation edge %s", name)
 }
 
 // UserMutation represents an operation that mutates the User nodes in the graph.

@@ -4,7 +4,7 @@ package ent
 
 import (
 	"fmt"
-	"library/ent/reset_password_validation"
+	"library/ent/resetpasswordvalidation"
 	"strings"
 	"time"
 
@@ -12,8 +12,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Reset_Password_Validation is the model entity for the Reset_Password_Validation schema.
-type Reset_Password_Validation struct {
+// ResetPasswordValidation is the model entity for the ResetPasswordValidation schema.
+type ResetPasswordValidation struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
@@ -27,15 +27,15 @@ type Reset_Password_Validation struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*Reset_Password_Validation) scanValues(columns []string) ([]any, error) {
+func (*ResetPasswordValidation) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case reset_password_validation.FieldID:
+		case resetpasswordvalidation.FieldID:
 			values[i] = new(sql.NullInt64)
-		case reset_password_validation.FieldEmail, reset_password_validation.FieldCode:
+		case resetpasswordvalidation.FieldEmail, resetpasswordvalidation.FieldCode:
 			values[i] = new(sql.NullString)
-		case reset_password_validation.FieldExpireDate:
+		case resetpasswordvalidation.FieldExpireDate:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -45,32 +45,32 @@ func (*Reset_Password_Validation) scanValues(columns []string) ([]any, error) {
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the Reset_Password_Validation fields.
-func (rpv *Reset_Password_Validation) assignValues(columns []string, values []any) error {
+// to the ResetPasswordValidation fields.
+func (rpv *ResetPasswordValidation) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case reset_password_validation.FieldID:
+		case resetpasswordvalidation.FieldID:
 			value, ok := values[i].(*sql.NullInt64)
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			rpv.ID = int(value.Int64)
-		case reset_password_validation.FieldEmail:
+		case resetpasswordvalidation.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
 				rpv.Email = value.String
 			}
-		case reset_password_validation.FieldExpireDate:
+		case resetpasswordvalidation.FieldExpireDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field expire_date", values[i])
 			} else if value.Valid {
 				rpv.ExpireDate = value.Time
 			}
-		case reset_password_validation.FieldCode:
+		case resetpasswordvalidation.FieldCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
 			} else if value.Valid {
@@ -83,34 +83,34 @@ func (rpv *Reset_Password_Validation) assignValues(columns []string, values []an
 	return nil
 }
 
-// Value returns the ent.Value that was dynamically selected and assigned to the Reset_Password_Validation.
+// Value returns the ent.Value that was dynamically selected and assigned to the ResetPasswordValidation.
 // This includes values selected through modifiers, order, etc.
-func (rpv *Reset_Password_Validation) Value(name string) (ent.Value, error) {
+func (rpv *ResetPasswordValidation) Value(name string) (ent.Value, error) {
 	return rpv.selectValues.Get(name)
 }
 
-// Update returns a builder for updating this Reset_Password_Validation.
-// Note that you need to call Reset_Password_Validation.Unwrap() before calling this method if this Reset_Password_Validation
+// Update returns a builder for updating this ResetPasswordValidation.
+// Note that you need to call ResetPasswordValidation.Unwrap() before calling this method if this ResetPasswordValidation
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (rpv *Reset_Password_Validation) Update() *ResetPasswordValidationUpdateOne {
+func (rpv *ResetPasswordValidation) Update() *ResetPasswordValidationUpdateOne {
 	return NewResetPasswordValidationClient(rpv.config).UpdateOne(rpv)
 }
 
-// Unwrap unwraps the Reset_Password_Validation entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the ResetPasswordValidation entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (rpv *Reset_Password_Validation) Unwrap() *Reset_Password_Validation {
+func (rpv *ResetPasswordValidation) Unwrap() *ResetPasswordValidation {
 	_tx, ok := rpv.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: Reset_Password_Validation is not a transactional entity")
+		panic("ent: ResetPasswordValidation is not a transactional entity")
 	}
 	rpv.config.driver = _tx.drv
 	return rpv
 }
 
 // String implements the fmt.Stringer.
-func (rpv *Reset_Password_Validation) String() string {
+func (rpv *ResetPasswordValidation) String() string {
 	var builder strings.Builder
-	builder.WriteString("Reset_Password_Validation(")
+	builder.WriteString("ResetPasswordValidation(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", rpv.ID))
 	builder.WriteString("email=")
 	builder.WriteString(rpv.Email)
@@ -124,5 +124,5 @@ func (rpv *Reset_Password_Validation) String() string {
 	return builder.String()
 }
 
-// Reset_Password_Validations is a parsable slice of Reset_Password_Validation.
-type Reset_Password_Validations []*Reset_Password_Validation
+// ResetPasswordValidations is a parsable slice of ResetPasswordValidation.
+type ResetPasswordValidations []*ResetPasswordValidation

@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"library/ent/reset_password_validation"
+	"library/ent/resetpasswordvalidation"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -14,7 +14,7 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ResetPasswordValidationCreate is the builder for creating a Reset_Password_Validation entity.
+// ResetPasswordValidationCreate is the builder for creating a ResetPasswordValidation entity.
 type ResetPasswordValidationCreate struct {
 	config
 	mutation *ResetPasswordValidationMutation
@@ -45,13 +45,13 @@ func (rpvc *ResetPasswordValidationCreate) Mutation() *ResetPasswordValidationMu
 	return rpvc.mutation
 }
 
-// Save creates the Reset_Password_Validation in the database.
-func (rpvc *ResetPasswordValidationCreate) Save(ctx context.Context) (*Reset_Password_Validation, error) {
+// Save creates the ResetPasswordValidation in the database.
+func (rpvc *ResetPasswordValidationCreate) Save(ctx context.Context) (*ResetPasswordValidation, error) {
 	return withHooks(ctx, rpvc.sqlSave, rpvc.mutation, rpvc.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (rpvc *ResetPasswordValidationCreate) SaveX(ctx context.Context) *Reset_Password_Validation {
+func (rpvc *ResetPasswordValidationCreate) SaveX(ctx context.Context) *ResetPasswordValidation {
 	v, err := rpvc.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -75,18 +75,18 @@ func (rpvc *ResetPasswordValidationCreate) ExecX(ctx context.Context) {
 // check runs all checks and user-defined validators on the builder.
 func (rpvc *ResetPasswordValidationCreate) check() error {
 	if _, ok := rpvc.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "Reset_Password_Validation.email"`)}
+		return &ValidationError{Name: "email", err: errors.New(`ent: missing required field "ResetPasswordValidation.email"`)}
 	}
 	if _, ok := rpvc.mutation.ExpireDate(); !ok {
-		return &ValidationError{Name: "expire_date", err: errors.New(`ent: missing required field "Reset_Password_Validation.expire_date"`)}
+		return &ValidationError{Name: "expire_date", err: errors.New(`ent: missing required field "ResetPasswordValidation.expire_date"`)}
 	}
 	if _, ok := rpvc.mutation.Code(); !ok {
-		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Reset_Password_Validation.code"`)}
+		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "ResetPasswordValidation.code"`)}
 	}
 	return nil
 }
 
-func (rpvc *ResetPasswordValidationCreate) sqlSave(ctx context.Context) (*Reset_Password_Validation, error) {
+func (rpvc *ResetPasswordValidationCreate) sqlSave(ctx context.Context) (*ResetPasswordValidation, error) {
 	if err := rpvc.check(); err != nil {
 		return nil, err
 	}
@@ -104,22 +104,22 @@ func (rpvc *ResetPasswordValidationCreate) sqlSave(ctx context.Context) (*Reset_
 	return _node, nil
 }
 
-func (rpvc *ResetPasswordValidationCreate) createSpec() (*Reset_Password_Validation, *sqlgraph.CreateSpec) {
+func (rpvc *ResetPasswordValidationCreate) createSpec() (*ResetPasswordValidation, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Reset_Password_Validation{config: rpvc.config}
-		_spec = sqlgraph.NewCreateSpec(reset_password_validation.Table, sqlgraph.NewFieldSpec(reset_password_validation.FieldID, field.TypeInt))
+		_node = &ResetPasswordValidation{config: rpvc.config}
+		_spec = sqlgraph.NewCreateSpec(resetpasswordvalidation.Table, sqlgraph.NewFieldSpec(resetpasswordvalidation.FieldID, field.TypeInt))
 	)
 	_spec.OnConflict = rpvc.conflict
 	if value, ok := rpvc.mutation.Email(); ok {
-		_spec.SetField(reset_password_validation.FieldEmail, field.TypeString, value)
+		_spec.SetField(resetpasswordvalidation.FieldEmail, field.TypeString, value)
 		_node.Email = value
 	}
 	if value, ok := rpvc.mutation.ExpireDate(); ok {
-		_spec.SetField(reset_password_validation.FieldExpireDate, field.TypeTime, value)
+		_spec.SetField(resetpasswordvalidation.FieldExpireDate, field.TypeTime, value)
 		_node.ExpireDate = value
 	}
 	if value, ok := rpvc.mutation.Code(); ok {
-		_spec.SetField(reset_password_validation.FieldCode, field.TypeString, value)
+		_spec.SetField(resetpasswordvalidation.FieldCode, field.TypeString, value)
 		_node.Code = value
 	}
 	return _node, _spec
@@ -128,7 +128,7 @@ func (rpvc *ResetPasswordValidationCreate) createSpec() (*Reset_Password_Validat
 // OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
 // of the `INSERT` statement. For example:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //		SetEmail(v).
 //		OnConflict(
 //			// Update the row with the new values
@@ -137,13 +137,13 @@ func (rpvc *ResetPasswordValidationCreate) createSpec() (*Reset_Password_Validat
 //		).
 //		// Override some of the fields with custom
 //		// update values.
-//		Update(func(u *ent.Reset_Password_ValidationUpsert) {
+//		Update(func(u *ent.ResetPasswordValidationUpsert) {
 //			SetEmail(v+v).
 //		}).
 //		Exec(ctx)
-func (rpvc *ResetPasswordValidationCreate) OnConflict(opts ...sql.ConflictOption) *Reset_Password_ValidationUpsertOne {
+func (rpvc *ResetPasswordValidationCreate) OnConflict(opts ...sql.ConflictOption) *ResetPasswordValidationUpsertOne {
 	rpvc.conflict = opts
-	return &Reset_Password_ValidationUpsertOne{
+	return &ResetPasswordValidationUpsertOne{
 		create: rpvc,
 	}
 }
@@ -151,74 +151,74 @@ func (rpvc *ResetPasswordValidationCreate) OnConflict(opts ...sql.ConflictOption
 // OnConflictColumns calls `OnConflict` and configures the columns
 // as conflict target. Using this option is equivalent to using:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //		OnConflict(sql.ConflictColumns(columns...)).
 //		Exec(ctx)
-func (rpvc *ResetPasswordValidationCreate) OnConflictColumns(columns ...string) *Reset_Password_ValidationUpsertOne {
+func (rpvc *ResetPasswordValidationCreate) OnConflictColumns(columns ...string) *ResetPasswordValidationUpsertOne {
 	rpvc.conflict = append(rpvc.conflict, sql.ConflictColumns(columns...))
-	return &Reset_Password_ValidationUpsertOne{
+	return &ResetPasswordValidationUpsertOne{
 		create: rpvc,
 	}
 }
 
 type (
-	// Reset_Password_ValidationUpsertOne is the builder for "upsert"-ing
-	//  one Reset_Password_Validation node.
-	Reset_Password_ValidationUpsertOne struct {
+	// ResetPasswordValidationUpsertOne is the builder for "upsert"-ing
+	//  one ResetPasswordValidation node.
+	ResetPasswordValidationUpsertOne struct {
 		create *ResetPasswordValidationCreate
 	}
 
-	// Reset_Password_ValidationUpsert is the "OnConflict" setter.
-	Reset_Password_ValidationUpsert struct {
+	// ResetPasswordValidationUpsert is the "OnConflict" setter.
+	ResetPasswordValidationUpsert struct {
 		*sql.UpdateSet
 	}
 )
 
 // SetEmail sets the "email" field.
-func (u *Reset_Password_ValidationUpsert) SetEmail(v string) *Reset_Password_ValidationUpsert {
-	u.Set(reset_password_validation.FieldEmail, v)
+func (u *ResetPasswordValidationUpsert) SetEmail(v string) *ResetPasswordValidationUpsert {
+	u.Set(resetpasswordvalidation.FieldEmail, v)
 	return u
 }
 
 // UpdateEmail sets the "email" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsert) UpdateEmail() *Reset_Password_ValidationUpsert {
-	u.SetExcluded(reset_password_validation.FieldEmail)
+func (u *ResetPasswordValidationUpsert) UpdateEmail() *ResetPasswordValidationUpsert {
+	u.SetExcluded(resetpasswordvalidation.FieldEmail)
 	return u
 }
 
 // SetExpireDate sets the "expire_date" field.
-func (u *Reset_Password_ValidationUpsert) SetExpireDate(v time.Time) *Reset_Password_ValidationUpsert {
-	u.Set(reset_password_validation.FieldExpireDate, v)
+func (u *ResetPasswordValidationUpsert) SetExpireDate(v time.Time) *ResetPasswordValidationUpsert {
+	u.Set(resetpasswordvalidation.FieldExpireDate, v)
 	return u
 }
 
 // UpdateExpireDate sets the "expire_date" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsert) UpdateExpireDate() *Reset_Password_ValidationUpsert {
-	u.SetExcluded(reset_password_validation.FieldExpireDate)
+func (u *ResetPasswordValidationUpsert) UpdateExpireDate() *ResetPasswordValidationUpsert {
+	u.SetExcluded(resetpasswordvalidation.FieldExpireDate)
 	return u
 }
 
 // SetCode sets the "code" field.
-func (u *Reset_Password_ValidationUpsert) SetCode(v string) *Reset_Password_ValidationUpsert {
-	u.Set(reset_password_validation.FieldCode, v)
+func (u *ResetPasswordValidationUpsert) SetCode(v string) *ResetPasswordValidationUpsert {
+	u.Set(resetpasswordvalidation.FieldCode, v)
 	return u
 }
 
 // UpdateCode sets the "code" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsert) UpdateCode() *Reset_Password_ValidationUpsert {
-	u.SetExcluded(reset_password_validation.FieldCode)
+func (u *ResetPasswordValidationUpsert) UpdateCode() *ResetPasswordValidationUpsert {
+	u.SetExcluded(resetpasswordvalidation.FieldCode)
 	return u
 }
 
 // UpdateNewValues updates the mutable fields using the new values that were set on create.
 // Using this option is equivalent to using:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
 //		).
 //		Exec(ctx)
-func (u *Reset_Password_ValidationUpsertOne) UpdateNewValues() *Reset_Password_ValidationUpsertOne {
+func (u *ResetPasswordValidationUpsertOne) UpdateNewValues() *ResetPasswordValidationUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	return u
 }
@@ -226,74 +226,74 @@ func (u *Reset_Password_ValidationUpsertOne) UpdateNewValues() *Reset_Password_V
 // Ignore sets each column to itself in case of conflict.
 // Using this option is equivalent to using:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //	    OnConflict(sql.ResolveWithIgnore()).
 //	    Exec(ctx)
-func (u *Reset_Password_ValidationUpsertOne) Ignore() *Reset_Password_ValidationUpsertOne {
+func (u *ResetPasswordValidationUpsertOne) Ignore() *ResetPasswordValidationUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
 	return u
 }
 
 // DoNothing configures the conflict_action to `DO NOTHING`.
 // Supported only by SQLite and PostgreSQL.
-func (u *Reset_Password_ValidationUpsertOne) DoNothing() *Reset_Password_ValidationUpsertOne {
+func (u *ResetPasswordValidationUpsertOne) DoNothing() *ResetPasswordValidationUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.DoNothing())
 	return u
 }
 
 // Update allows overriding fields `UPDATE` values. See the ResetPasswordValidationCreate.OnConflict
 // documentation for more info.
-func (u *Reset_Password_ValidationUpsertOne) Update(set func(*Reset_Password_ValidationUpsert)) *Reset_Password_ValidationUpsertOne {
+func (u *ResetPasswordValidationUpsertOne) Update(set func(*ResetPasswordValidationUpsert)) *ResetPasswordValidationUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
-		set(&Reset_Password_ValidationUpsert{UpdateSet: update})
+		set(&ResetPasswordValidationUpsert{UpdateSet: update})
 	}))
 	return u
 }
 
 // SetEmail sets the "email" field.
-func (u *Reset_Password_ValidationUpsertOne) SetEmail(v string) *Reset_Password_ValidationUpsertOne {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertOne) SetEmail(v string) *ResetPasswordValidationUpsertOne {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.SetEmail(v)
 	})
 }
 
 // UpdateEmail sets the "email" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsertOne) UpdateEmail() *Reset_Password_ValidationUpsertOne {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertOne) UpdateEmail() *ResetPasswordValidationUpsertOne {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.UpdateEmail()
 	})
 }
 
 // SetExpireDate sets the "expire_date" field.
-func (u *Reset_Password_ValidationUpsertOne) SetExpireDate(v time.Time) *Reset_Password_ValidationUpsertOne {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertOne) SetExpireDate(v time.Time) *ResetPasswordValidationUpsertOne {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.SetExpireDate(v)
 	})
 }
 
 // UpdateExpireDate sets the "expire_date" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsertOne) UpdateExpireDate() *Reset_Password_ValidationUpsertOne {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertOne) UpdateExpireDate() *ResetPasswordValidationUpsertOne {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.UpdateExpireDate()
 	})
 }
 
 // SetCode sets the "code" field.
-func (u *Reset_Password_ValidationUpsertOne) SetCode(v string) *Reset_Password_ValidationUpsertOne {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertOne) SetCode(v string) *ResetPasswordValidationUpsertOne {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.SetCode(v)
 	})
 }
 
 // UpdateCode sets the "code" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsertOne) UpdateCode() *Reset_Password_ValidationUpsertOne {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertOne) UpdateCode() *ResetPasswordValidationUpsertOne {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.UpdateCode()
 	})
 }
 
 // Exec executes the query.
-func (u *Reset_Password_ValidationUpsertOne) Exec(ctx context.Context) error {
+func (u *ResetPasswordValidationUpsertOne) Exec(ctx context.Context) error {
 	if len(u.create.conflict) == 0 {
 		return errors.New("ent: missing options for ResetPasswordValidationCreate.OnConflict")
 	}
@@ -301,14 +301,14 @@ func (u *Reset_Password_ValidationUpsertOne) Exec(ctx context.Context) error {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (u *Reset_Password_ValidationUpsertOne) ExecX(ctx context.Context) {
+func (u *ResetPasswordValidationUpsertOne) ExecX(ctx context.Context) {
 	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *Reset_Password_ValidationUpsertOne) ID(ctx context.Context) (id int, err error) {
+func (u *ResetPasswordValidationUpsertOne) ID(ctx context.Context) (id int, err error) {
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -317,7 +317,7 @@ func (u *Reset_Password_ValidationUpsertOne) ID(ctx context.Context) (id int, er
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *Reset_Password_ValidationUpsertOne) IDX(ctx context.Context) int {
+func (u *ResetPasswordValidationUpsertOne) IDX(ctx context.Context) int {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -325,17 +325,17 @@ func (u *Reset_Password_ValidationUpsertOne) IDX(ctx context.Context) int {
 	return id
 }
 
-// ResetPasswordValidationCreateBulk is the builder for creating many Reset_Password_Validation entities in bulk.
+// ResetPasswordValidationCreateBulk is the builder for creating many ResetPasswordValidation entities in bulk.
 type ResetPasswordValidationCreateBulk struct {
 	config
 	builders []*ResetPasswordValidationCreate
 	conflict []sql.ConflictOption
 }
 
-// Save creates the Reset_Password_Validation entities in the database.
-func (rpvcb *ResetPasswordValidationCreateBulk) Save(ctx context.Context) ([]*Reset_Password_Validation, error) {
+// Save creates the ResetPasswordValidation entities in the database.
+func (rpvcb *ResetPasswordValidationCreateBulk) Save(ctx context.Context) ([]*ResetPasswordValidation, error) {
 	specs := make([]*sqlgraph.CreateSpec, len(rpvcb.builders))
-	nodes := make([]*Reset_Password_Validation, len(rpvcb.builders))
+	nodes := make([]*ResetPasswordValidation, len(rpvcb.builders))
 	mutators := make([]Mutator, len(rpvcb.builders))
 	for i := range rpvcb.builders {
 		func(i int, root context.Context) {
@@ -389,7 +389,7 @@ func (rpvcb *ResetPasswordValidationCreateBulk) Save(ctx context.Context) ([]*Re
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (rpvcb *ResetPasswordValidationCreateBulk) SaveX(ctx context.Context) []*Reset_Password_Validation {
+func (rpvcb *ResetPasswordValidationCreateBulk) SaveX(ctx context.Context) []*ResetPasswordValidation {
 	v, err := rpvcb.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -413,7 +413,7 @@ func (rpvcb *ResetPasswordValidationCreateBulk) ExecX(ctx context.Context) {
 // OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
 // of the `INSERT` statement. For example:
 //
-//	client.Reset_Password_Validation.CreateBulk(builders...).
+//	client.ResetPasswordValidation.CreateBulk(builders...).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
@@ -421,13 +421,13 @@ func (rpvcb *ResetPasswordValidationCreateBulk) ExecX(ctx context.Context) {
 //		).
 //		// Override some of the fields with custom
 //		// update values.
-//		Update(func(u *ent.Reset_Password_ValidationUpsert) {
+//		Update(func(u *ent.ResetPasswordValidationUpsert) {
 //			SetEmail(v+v).
 //		}).
 //		Exec(ctx)
-func (rpvcb *ResetPasswordValidationCreateBulk) OnConflict(opts ...sql.ConflictOption) *Reset_Password_ValidationUpsertBulk {
+func (rpvcb *ResetPasswordValidationCreateBulk) OnConflict(opts ...sql.ConflictOption) *ResetPasswordValidationUpsertBulk {
 	rpvcb.conflict = opts
-	return &Reset_Password_ValidationUpsertBulk{
+	return &ResetPasswordValidationUpsertBulk{
 		create: rpvcb,
 	}
 }
@@ -435,31 +435,31 @@ func (rpvcb *ResetPasswordValidationCreateBulk) OnConflict(opts ...sql.ConflictO
 // OnConflictColumns calls `OnConflict` and configures the columns
 // as conflict target. Using this option is equivalent to using:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //		OnConflict(sql.ConflictColumns(columns...)).
 //		Exec(ctx)
-func (rpvcb *ResetPasswordValidationCreateBulk) OnConflictColumns(columns ...string) *Reset_Password_ValidationUpsertBulk {
+func (rpvcb *ResetPasswordValidationCreateBulk) OnConflictColumns(columns ...string) *ResetPasswordValidationUpsertBulk {
 	rpvcb.conflict = append(rpvcb.conflict, sql.ConflictColumns(columns...))
-	return &Reset_Password_ValidationUpsertBulk{
+	return &ResetPasswordValidationUpsertBulk{
 		create: rpvcb,
 	}
 }
 
-// Reset_Password_ValidationUpsertBulk is the builder for "upsert"-ing
-// a bulk of Reset_Password_Validation nodes.
-type Reset_Password_ValidationUpsertBulk struct {
+// ResetPasswordValidationUpsertBulk is the builder for "upsert"-ing
+// a bulk of ResetPasswordValidation nodes.
+type ResetPasswordValidationUpsertBulk struct {
 	create *ResetPasswordValidationCreateBulk
 }
 
 // UpdateNewValues updates the mutable fields using the new values that
 // were set on create. Using this option is equivalent to using:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
 //		).
 //		Exec(ctx)
-func (u *Reset_Password_ValidationUpsertBulk) UpdateNewValues() *Reset_Password_ValidationUpsertBulk {
+func (u *ResetPasswordValidationUpsertBulk) UpdateNewValues() *ResetPasswordValidationUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	return u
 }
@@ -467,74 +467,74 @@ func (u *Reset_Password_ValidationUpsertBulk) UpdateNewValues() *Reset_Password_
 // Ignore sets each column to itself in case of conflict.
 // Using this option is equivalent to using:
 //
-//	client.Reset_Password_Validation.Create().
+//	client.ResetPasswordValidation.Create().
 //		OnConflict(sql.ResolveWithIgnore()).
 //		Exec(ctx)
-func (u *Reset_Password_ValidationUpsertBulk) Ignore() *Reset_Password_ValidationUpsertBulk {
+func (u *ResetPasswordValidationUpsertBulk) Ignore() *ResetPasswordValidationUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
 	return u
 }
 
 // DoNothing configures the conflict_action to `DO NOTHING`.
 // Supported only by SQLite and PostgreSQL.
-func (u *Reset_Password_ValidationUpsertBulk) DoNothing() *Reset_Password_ValidationUpsertBulk {
+func (u *ResetPasswordValidationUpsertBulk) DoNothing() *ResetPasswordValidationUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.DoNothing())
 	return u
 }
 
 // Update allows overriding fields `UPDATE` values. See the ResetPasswordValidationCreateBulk.OnConflict
 // documentation for more info.
-func (u *Reset_Password_ValidationUpsertBulk) Update(set func(*Reset_Password_ValidationUpsert)) *Reset_Password_ValidationUpsertBulk {
+func (u *ResetPasswordValidationUpsertBulk) Update(set func(*ResetPasswordValidationUpsert)) *ResetPasswordValidationUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
-		set(&Reset_Password_ValidationUpsert{UpdateSet: update})
+		set(&ResetPasswordValidationUpsert{UpdateSet: update})
 	}))
 	return u
 }
 
 // SetEmail sets the "email" field.
-func (u *Reset_Password_ValidationUpsertBulk) SetEmail(v string) *Reset_Password_ValidationUpsertBulk {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertBulk) SetEmail(v string) *ResetPasswordValidationUpsertBulk {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.SetEmail(v)
 	})
 }
 
 // UpdateEmail sets the "email" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsertBulk) UpdateEmail() *Reset_Password_ValidationUpsertBulk {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertBulk) UpdateEmail() *ResetPasswordValidationUpsertBulk {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.UpdateEmail()
 	})
 }
 
 // SetExpireDate sets the "expire_date" field.
-func (u *Reset_Password_ValidationUpsertBulk) SetExpireDate(v time.Time) *Reset_Password_ValidationUpsertBulk {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertBulk) SetExpireDate(v time.Time) *ResetPasswordValidationUpsertBulk {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.SetExpireDate(v)
 	})
 }
 
 // UpdateExpireDate sets the "expire_date" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsertBulk) UpdateExpireDate() *Reset_Password_ValidationUpsertBulk {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertBulk) UpdateExpireDate() *ResetPasswordValidationUpsertBulk {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.UpdateExpireDate()
 	})
 }
 
 // SetCode sets the "code" field.
-func (u *Reset_Password_ValidationUpsertBulk) SetCode(v string) *Reset_Password_ValidationUpsertBulk {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertBulk) SetCode(v string) *ResetPasswordValidationUpsertBulk {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.SetCode(v)
 	})
 }
 
 // UpdateCode sets the "code" field to the value that was provided on create.
-func (u *Reset_Password_ValidationUpsertBulk) UpdateCode() *Reset_Password_ValidationUpsertBulk {
-	return u.Update(func(s *Reset_Password_ValidationUpsert) {
+func (u *ResetPasswordValidationUpsertBulk) UpdateCode() *ResetPasswordValidationUpsertBulk {
+	return u.Update(func(s *ResetPasswordValidationUpsert) {
 		s.UpdateCode()
 	})
 }
 
 // Exec executes the query.
-func (u *Reset_Password_ValidationUpsertBulk) Exec(ctx context.Context) error {
+func (u *ResetPasswordValidationUpsertBulk) Exec(ctx context.Context) error {
 	for i, b := range u.create.builders {
 		if len(b.conflict) != 0 {
 			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the ResetPasswordValidationCreateBulk instead", i)
@@ -547,7 +547,7 @@ func (u *Reset_Password_ValidationUpsertBulk) Exec(ctx context.Context) error {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (u *Reset_Password_ValidationUpsertBulk) ExecX(ctx context.Context) {
+func (u *ResetPasswordValidationUpsertBulk) ExecX(ctx context.Context) {
 	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}

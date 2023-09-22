@@ -135,14 +135,14 @@ func (u *User) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	var um *user.UpdateUserModel
+	var um user.UpdateUserModel
 
 	if err = c.ShouldBindJSON(&um); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err = u.userService.UpdateUser(c.Request.Context(), int(id), um); err != nil {
+	if err = u.userService.UpdateUser(c.Request.Context(), int(id), &um); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

@@ -95,6 +95,11 @@ definitions:
       username:
         type: string
     type: object
+  reset_password.SendResetPasswordReq:
+    properties:
+      email:
+        type: string
+    type: object
   user.CreateUserModel:
     properties:
       confirm_password:
@@ -139,6 +144,25 @@ info:
   title: Library API
   version: "1.0"
 paths:
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: enter email
+        in: body
+        name: email
+        required: true
+        schema:
+          $ref: '#/definitions/reset_password.SendResetPasswordReq'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: send reset password validation
+      tags:
+      - auth
   /book:
     post:
       consumes:

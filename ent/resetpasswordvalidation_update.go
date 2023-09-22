@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"library/ent/predicate"
-	"library/ent/reset_password_validation"
+	"library/ent/resetpasswordvalidation"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -15,7 +15,7 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ResetPasswordValidationUpdate is the builder for updating Reset_Password_Validation entities.
+// ResetPasswordValidationUpdate is the builder for updating ResetPasswordValidation entities.
 type ResetPasswordValidationUpdate struct {
 	config
 	hooks    []Hook
@@ -23,7 +23,7 @@ type ResetPasswordValidationUpdate struct {
 }
 
 // Where appends a list predicates to the ResetPasswordValidationUpdate builder.
-func (rpvu *ResetPasswordValidationUpdate) Where(ps ...predicate.Reset_Password_Validation) *ResetPasswordValidationUpdate {
+func (rpvu *ResetPasswordValidationUpdate) Where(ps ...predicate.ResetPasswordValidation) *ResetPasswordValidationUpdate {
 	rpvu.mutation.Where(ps...)
 	return rpvu
 }
@@ -79,7 +79,7 @@ func (rpvu *ResetPasswordValidationUpdate) ExecX(ctx context.Context) {
 }
 
 func (rpvu *ResetPasswordValidationUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(reset_password_validation.Table, reset_password_validation.Columns, sqlgraph.NewFieldSpec(reset_password_validation.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(resetpasswordvalidation.Table, resetpasswordvalidation.Columns, sqlgraph.NewFieldSpec(resetpasswordvalidation.FieldID, field.TypeInt))
 	if ps := rpvu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -88,17 +88,17 @@ func (rpvu *ResetPasswordValidationUpdate) sqlSave(ctx context.Context) (n int, 
 		}
 	}
 	if value, ok := rpvu.mutation.Email(); ok {
-		_spec.SetField(reset_password_validation.FieldEmail, field.TypeString, value)
+		_spec.SetField(resetpasswordvalidation.FieldEmail, field.TypeString, value)
 	}
 	if value, ok := rpvu.mutation.ExpireDate(); ok {
-		_spec.SetField(reset_password_validation.FieldExpireDate, field.TypeTime, value)
+		_spec.SetField(resetpasswordvalidation.FieldExpireDate, field.TypeTime, value)
 	}
 	if value, ok := rpvu.mutation.Code(); ok {
-		_spec.SetField(reset_password_validation.FieldCode, field.TypeString, value)
+		_spec.SetField(resetpasswordvalidation.FieldCode, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, rpvu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{reset_password_validation.Label}
+			err = &NotFoundError{resetpasswordvalidation.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -108,7 +108,7 @@ func (rpvu *ResetPasswordValidationUpdate) sqlSave(ctx context.Context) (n int, 
 	return n, nil
 }
 
-// ResetPasswordValidationUpdateOne is the builder for updating a single Reset_Password_Validation entity.
+// ResetPasswordValidationUpdateOne is the builder for updating a single ResetPasswordValidation entity.
 type ResetPasswordValidationUpdateOne struct {
 	config
 	fields   []string
@@ -140,7 +140,7 @@ func (rpvuo *ResetPasswordValidationUpdateOne) Mutation() *ResetPasswordValidati
 }
 
 // Where appends a list predicates to the ResetPasswordValidationUpdate builder.
-func (rpvuo *ResetPasswordValidationUpdateOne) Where(ps ...predicate.Reset_Password_Validation) *ResetPasswordValidationUpdateOne {
+func (rpvuo *ResetPasswordValidationUpdateOne) Where(ps ...predicate.ResetPasswordValidation) *ResetPasswordValidationUpdateOne {
 	rpvuo.mutation.Where(ps...)
 	return rpvuo
 }
@@ -152,13 +152,13 @@ func (rpvuo *ResetPasswordValidationUpdateOne) Select(field string, fields ...st
 	return rpvuo
 }
 
-// Save executes the query and returns the updated Reset_Password_Validation entity.
-func (rpvuo *ResetPasswordValidationUpdateOne) Save(ctx context.Context) (*Reset_Password_Validation, error) {
+// Save executes the query and returns the updated ResetPasswordValidation entity.
+func (rpvuo *ResetPasswordValidationUpdateOne) Save(ctx context.Context) (*ResetPasswordValidation, error) {
 	return withHooks(ctx, rpvuo.sqlSave, rpvuo.mutation, rpvuo.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (rpvuo *ResetPasswordValidationUpdateOne) SaveX(ctx context.Context) *Reset_Password_Validation {
+func (rpvuo *ResetPasswordValidationUpdateOne) SaveX(ctx context.Context) *ResetPasswordValidation {
 	node, err := rpvuo.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -179,21 +179,21 @@ func (rpvuo *ResetPasswordValidationUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-func (rpvuo *ResetPasswordValidationUpdateOne) sqlSave(ctx context.Context) (_node *Reset_Password_Validation, err error) {
-	_spec := sqlgraph.NewUpdateSpec(reset_password_validation.Table, reset_password_validation.Columns, sqlgraph.NewFieldSpec(reset_password_validation.FieldID, field.TypeInt))
+func (rpvuo *ResetPasswordValidationUpdateOne) sqlSave(ctx context.Context) (_node *ResetPasswordValidation, err error) {
+	_spec := sqlgraph.NewUpdateSpec(resetpasswordvalidation.Table, resetpasswordvalidation.Columns, sqlgraph.NewFieldSpec(resetpasswordvalidation.FieldID, field.TypeInt))
 	id, ok := rpvuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Reset_Password_Validation.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "ResetPasswordValidation.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := rpvuo.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, reset_password_validation.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, resetpasswordvalidation.FieldID)
 		for _, f := range fields {
-			if !reset_password_validation.ValidColumn(f) {
+			if !resetpasswordvalidation.ValidColumn(f) {
 				return nil, &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 			}
-			if f != reset_password_validation.FieldID {
+			if f != resetpasswordvalidation.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)
 			}
 		}
@@ -206,20 +206,20 @@ func (rpvuo *ResetPasswordValidationUpdateOne) sqlSave(ctx context.Context) (_no
 		}
 	}
 	if value, ok := rpvuo.mutation.Email(); ok {
-		_spec.SetField(reset_password_validation.FieldEmail, field.TypeString, value)
+		_spec.SetField(resetpasswordvalidation.FieldEmail, field.TypeString, value)
 	}
 	if value, ok := rpvuo.mutation.ExpireDate(); ok {
-		_spec.SetField(reset_password_validation.FieldExpireDate, field.TypeTime, value)
+		_spec.SetField(resetpasswordvalidation.FieldExpireDate, field.TypeTime, value)
 	}
 	if value, ok := rpvuo.mutation.Code(); ok {
-		_spec.SetField(reset_password_validation.FieldCode, field.TypeString, value)
+		_spec.SetField(resetpasswordvalidation.FieldCode, field.TypeString, value)
 	}
-	_node = &Reset_Password_Validation{config: rpvuo.config}
+	_node = &ResetPasswordValidation{config: rpvuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
 	if err = sqlgraph.UpdateNode(ctx, rpvuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{reset_password_validation.Label}
+			err = &NotFoundError{resetpasswordvalidation.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}

@@ -9,6 +9,7 @@ import (
 type RepositoryInterface interface {
 	User() UserRepositoryInterface
 	Book() BookRepositoryInterface
+	ResetPass() ResetPasswordInterface
 }
 
 type UserRepositoryInterface interface {
@@ -29,4 +30,8 @@ type BookRepositoryInterface interface {
 	ListBook(ctx context.Context, limit, offset int, orderBy string) ([]*ent.Book, int, error)
 	GetBookByID(ctx context.Context, id int) (*dto.Book, error)
 	FetchBookData(limit, offset int, orderBy string, fetchAll bool) ([]*ent.Book, error)
+}
+
+type ResetPasswordInterface interface {
+	Create(ctx context.Context, v *dto.ResetPasswordValidation) error
 }

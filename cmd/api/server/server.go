@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"library/cmd/api/handler/v1/book"
 	"library/cmd/api/handler/v1/login"
+	"library/cmd/api/handler/v1/reset_password"
 	"library/cmd/api/handler/v1/user"
 	"library/ent"
 	"library/pkg/utils"
@@ -25,9 +26,10 @@ type Server struct {
 }
 
 type Handlers struct {
-	user  user.Handler
-	login login.Handler
-	book  book.Handler
+	user    user.Handler
+	login   login.Handler
+	book    book.Handler
+	respass reset_password.Handler
 }
 
 func (s *Server) Init() error {
@@ -36,7 +38,10 @@ func (s *Server) Init() error {
 	if err != nil {
 		return err
 	}
-	s.initHandlers()
+	err = s.initHandlers()
+	if err != nil {
+		return fmt.Errorf("init :%w", err)
+	}
 	s.initMiddlewares()
 	s.linkRoutes()
 

@@ -9,8 +9,8 @@ import (
 // Book is the predicate function for book builders.
 type Book func(*sql.Selector)
 
-// Reset_Password_Validation is the predicate function for reset_password_validation builders.
-type Reset_Password_Validation func(*sql.Selector)
+// ResetPasswordValidation is the predicate function for resetpasswordvalidation builders.
+type ResetPasswordValidation func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)

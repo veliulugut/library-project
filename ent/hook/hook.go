@@ -20,12 +20,12 @@ func (f BookFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BookMutation", m)
 }
 
-// The Reset_Password_ValidationFunc type is an adapter to allow the use of ordinary
-// function as Reset_Password_Validation mutator.
-type Reset_Password_ValidationFunc func(context.Context, *ent.ResetPasswordValidationMutation) (ent.Value, error)
+// The ResetPasswordValidationFunc type is an adapter to allow the use of ordinary
+// function as ResetPasswordValidation mutator.
+type ResetPasswordValidationFunc func(context.Context, *ent.ResetPasswordValidationMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f Reset_Password_ValidationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+func (f ResetPasswordValidationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
 	if mv, ok := m.(*ent.ResetPasswordValidationMutation); ok {
 		return f(ctx, mv)
 	}

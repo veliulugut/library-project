@@ -5,14 +5,14 @@ package ent
 import (
 	"context"
 	"library/ent/predicate"
-	"library/ent/reset_password_validation"
+	"library/ent/resetpasswordvalidation"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
 
-// ResetPasswordValidationDelete is the builder for deleting a Reset_Password_Validation entity.
+// ResetPasswordValidationDelete is the builder for deleting a ResetPasswordValidation entity.
 type ResetPasswordValidationDelete struct {
 	config
 	hooks    []Hook
@@ -20,7 +20,7 @@ type ResetPasswordValidationDelete struct {
 }
 
 // Where appends a list predicates to the ResetPasswordValidationDelete builder.
-func (rpvd *ResetPasswordValidationDelete) Where(ps ...predicate.Reset_Password_Validation) *ResetPasswordValidationDelete {
+func (rpvd *ResetPasswordValidationDelete) Where(ps ...predicate.ResetPasswordValidation) *ResetPasswordValidationDelete {
 	rpvd.mutation.Where(ps...)
 	return rpvd
 }
@@ -40,7 +40,7 @@ func (rpvd *ResetPasswordValidationDelete) ExecX(ctx context.Context) int {
 }
 
 func (rpvd *ResetPasswordValidationDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(reset_password_validation.Table, sqlgraph.NewFieldSpec(reset_password_validation.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewDeleteSpec(resetpasswordvalidation.Table, sqlgraph.NewFieldSpec(resetpasswordvalidation.FieldID, field.TypeInt))
 	if ps := rpvd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -56,13 +56,13 @@ func (rpvd *ResetPasswordValidationDelete) sqlExec(ctx context.Context) (int, er
 	return affected, err
 }
 
-// ResetPasswordValidationDeleteOne is the builder for deleting a single Reset_Password_Validation entity.
+// ResetPasswordValidationDeleteOne is the builder for deleting a single ResetPasswordValidation entity.
 type ResetPasswordValidationDeleteOne struct {
 	rpvd *ResetPasswordValidationDelete
 }
 
 // Where appends a list predicates to the ResetPasswordValidationDelete builder.
-func (rpvdo *ResetPasswordValidationDeleteOne) Where(ps ...predicate.Reset_Password_Validation) *ResetPasswordValidationDeleteOne {
+func (rpvdo *ResetPasswordValidationDeleteOne) Where(ps ...predicate.ResetPasswordValidation) *ResetPasswordValidationDeleteOne {
 	rpvdo.rpvd.mutation.Where(ps...)
 	return rpvdo
 }
@@ -74,7 +74,7 @@ func (rpvdo *ResetPasswordValidationDeleteOne) Exec(ctx context.Context) error {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{reset_password_validation.Label}
+		return &NotFoundError{resetpasswordvalidation.Label}
 	default:
 		return nil
 	}
