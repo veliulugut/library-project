@@ -6,7 +6,7 @@ package book
 
 import (
 	context "context"
-	dto "library/pkg/repository/dto"
+	ent "library/ent"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -63,11 +63,26 @@ func (mr *MockServiceBookMockRecorder) DeleteBook(arg0, arg1 interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteBook", reflect.TypeOf((*MockServiceBook)(nil).DeleteBook), arg0, arg1)
 }
 
+// FetchBookData mocks base method.
+func (m *MockServiceBook) FetchBookData(arg0, arg1 int, arg2 string, arg3 bool) ([]*ent.Book, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FetchBookData", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].([]*ent.Book)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FetchBookData indicates an expected call of FetchBookData.
+func (mr *MockServiceBookMockRecorder) FetchBookData(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchBookData", reflect.TypeOf((*MockServiceBook)(nil).FetchBookData), arg0, arg1, arg2, arg3)
+}
+
 // GetBookByID mocks base method.
-func (m *MockServiceBook) GetBookByID(arg0 context.Context, arg1 int) (*dto.Book, error) {
+func (m *MockServiceBook) GetBookByID(arg0 context.Context, arg1 int) (*GetBookModel, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBookByID", arg0, arg1)
-	ret0, _ := ret[0].(*dto.Book)
+	ret0, _ := ret[0].(*GetBookModel)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -79,10 +94,10 @@ func (mr *MockServiceBookMockRecorder) GetBookByID(arg0, arg1 interface{}) *gomo
 }
 
 // GetBookByName mocks base method.
-func (m *MockServiceBook) GetBookByName(arg0 context.Context, arg1 string) (*dto.Book, error) {
+func (m *MockServiceBook) GetBookByName(arg0 context.Context, arg1 string) (*GetBookByName, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBookByName", arg0, arg1)
-	ret0, _ := ret[0].(*dto.Book)
+	ret0, _ := ret[0].(*GetBookByName)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -94,12 +109,13 @@ func (mr *MockServiceBookMockRecorder) GetBookByName(arg0, arg1 interface{}) *go
 }
 
 // ListBook mocks base method.
-func (m *MockServiceBook) ListBook(arg0 context.Context, arg1, arg2 int, arg3 string) ([]*dto.Book, error) {
+func (m *MockServiceBook) ListBook(arg0 context.Context, arg1, arg2 int, arg3 string) ([]*GetBookModel, int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListBook", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].([]*dto.Book)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].([]*GetBookModel)
+	ret1, _ := ret[1].(int)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // ListBook indicates an expected call of ListBook.

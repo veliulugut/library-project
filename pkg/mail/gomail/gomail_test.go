@@ -11,7 +11,7 @@ func TestGoMail_SendResetPasswordEmail(t *testing.T) {
 	host, port, from, password := getEmailEnvironment(t)
 	gm := New(host, port, from, password)
 
-	err := gm.SendResetPasswordEmail(context.Background(), "me@kaanksc.com", "12341")
+	err := gm.SendResetPasswordEmail(context.Background(), "test@mail.com", "12341")
 	if err != nil {
 		t.Error(err)
 	}
