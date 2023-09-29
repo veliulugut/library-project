@@ -77,6 +77,22 @@ func (mr *MockServiceMockRecorder) GetUserByID(arg0, arg1 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockService)(nil).GetUserByID), arg0, arg1)
 }
 
+// ListBook mocks base method.
+func (m *MockService) ListBook(arg0 context.Context, arg1, arg2 int, arg3 string) ([]*GetUserModel, int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListBook", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].([]*GetUserModel)
+	ret1, _ := ret[1].(int)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListBook indicates an expected call of ListBook.
+func (mr *MockServiceMockRecorder) ListBook(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBook", reflect.TypeOf((*MockService)(nil).ListBook), arg0, arg1, arg2, arg3)
+}
+
 // UpdateUser mocks base method.
 func (m *MockService) UpdateUser(arg0 context.Context, arg1 int, arg2 *UpdateUserModel) error {
 	m.ctrl.T.Helper()
