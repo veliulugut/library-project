@@ -74,7 +74,7 @@ func (s *Server) initHandlers() error {
 	userService := usersrv.New(bc, repo)
 	loginService := loginsrv.New(repo, j, bc)
 	bookService := booksrv.New(repo)
-	rpService := respass.New(repo, mailSender)
+	rpService := respass.New(repo, mailSender, bc)
 
 	//handlers
 	s.hnd.user = userhnd.NewUser(userService)

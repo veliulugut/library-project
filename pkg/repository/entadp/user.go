@@ -12,14 +12,14 @@ import (
 
 var _ UserRepositoryInterface = (*UserRepository)(nil)
 
-type UserRepository struct {
-	DBClient *ent.Client
-}
-
 func NewUserRepository(DBClient *ent.Client) *UserRepository {
 	return &UserRepository{
 		DBClient: DBClient,
 	}
+}
+
+type UserRepository struct {
+	DBClient *ent.Client
 }
 
 func (u *UserRepository) CreateUser(ctx context.Context, c *dto.User) error {
@@ -140,4 +140,21 @@ func (u *UserRepository) ListUser(ctx context.Context, limit, offset int, orderB
 	}
 
 	return users, count, nil
+}
+
+func (u *UserRepository) UpdatePassword(ctx context.Context, email, password string) error {
+	_, err := u.DBClient.User.Update().
+		Where(
+			user.Email(email),
+		).
+		SetPassword(password).
+		Save(ctx)
+	if err != nil {
+		if ent.IsNotFound(err) {
+			return fmt.Errorf("entadp user / update password :%w", ErrNotFound)
+		}
+		return fmt.Errorf("entadp user / update password :%w", err)
+	}
+
+	return nil
 }

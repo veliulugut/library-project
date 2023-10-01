@@ -20,6 +20,7 @@ type UserRepositoryInterface interface {
 	GetUserByUserName(ctx context.Context, name string) (*dto.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*dto.User, error)
 	ListUser(ctx context.Context, limit, offset int, orderBy string) ([]*ent.User, int, error)
+	UpdatePassword(ctx context.Context, email, password string) error
 }
 
 type BookRepositoryInterface interface {
@@ -34,4 +35,6 @@ type BookRepositoryInterface interface {
 
 type ResetPasswordInterface interface {
 	Create(ctx context.Context, v *dto.ResetPasswordValidation) error
+	Get(ctx context.Context, email string, code string) (*dto.ResetPasswordValidation, error)
+	Delete(ctx context.Context, email string) error
 }

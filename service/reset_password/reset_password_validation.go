@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"library/pkg/mail"
+	"library/pkg/passwd"
 	"library/pkg/repository/dto"
 	"library/pkg/repository/entadp"
 	"library/pkg/utils"
@@ -12,16 +13,18 @@ import (
 
 var _ ServiceResetPass = (*ResetPass)(nil)
 
-type ResetPass struct {
-	repo       entadp.RepositoryInterface
-	mailSender mail.Mail
-}
-
-func New(r entadp.RepositoryInterface, m mail.Mail) *ResetPass {
+func New(r entadp.RepositoryInterface, m mail.Mail, e passwd.Interface) *ResetPass {
 	return &ResetPass{
 		repo:       r,
 		mailSender: m,
+		enc:        e,
 	}
+}
+
+type ResetPass struct {
+	repo       entadp.RepositoryInterface
+	mailSender mail.Mail
+	enc        passwd.Interface
 }
 
 func (r *ResetPass) SendResetPasswordEmail(ctx context.Context, email string) error {
@@ -45,5 +48,37 @@ func (r *ResetPass) SendResetPasswordEmail(ctx context.Context, email string) er
 	if err != nil {
 		return fmt.Errorf("send reset password email :%w", err)
 	}
+	return nil
+}
+
+func (r *ResetPass) Validate(ctx context.Context, email, code, newPassword, confirmNewPassword string) error {
+	rpv, err := r.repo.ResetPass().Get(ctx, email, code)
+	if err != nil {
+		return fmt.Errorf("validate :%w", err)
+	}
+
+	if rpv.ExpireDate.Before(time.Now()) {
+		return fmt.Errorf("validation :%w", ErrExpiredValidationCode)
+	}
+
+	if newPassword != confirmNewPassword {
+		return fmt.Errorf("validation :%w", ErrPasswordNotMatch)
+	}
+
+	hashed, err := r.enc.Generate(newPassword)
+	if err != nil {
+		return fmt.Errorf("validate :%w", err)
+	}
+
+	err = r.repo.User().UpdatePassword(ctx, email, hashed)
+	if err != nil {
+		return fmt.Errorf("validate :%w", err)
+	}
+
+	err = r.repo.ResetPass().Delete(ctx, email)
+	if err != nil {
+		return fmt.Errorf("validate :%w", err)
+	}
+
 	return nil
 }

@@ -7,4 +7,5 @@ import (
 
 type ServiceResetPass interface {
 	SendResetPasswordEmail(ctx context.Context, email string) error
+	Validate(ctx context.Context, email, code, newPassword, confirmNewPassword string) error
 }

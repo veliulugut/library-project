@@ -44,3 +44,30 @@ func (r *ResetPass) SendResetPasswordValidation(c *gin.Context) {
 
 	c.Status(http.StatusNoContent)
 }
+
+// Validate godoc
+// @Summary validate password reset
+// @Schemes
+// @Description
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param req body ValidateReq  true "enter credentials"
+// @Success 204
+// @Router /auth/validate-reset-password [post]
+func (r *ResetPass) Validate(c *gin.Context) {
+	var icBody ValidateReq
+
+	if err := c.ShouldBindJSON(&icBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := r.res.Validate(c.Request.Context(), icBody.Email, icBody.Code, icBody.NewPassword, icBody.ConfirmNewPassword)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Status(http.StatusNoContent)
+}

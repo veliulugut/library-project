@@ -100,6 +100,17 @@ definitions:
       email:
         type: string
     type: object
+  reset_password.ValidateReq:
+    properties:
+      code:
+        type: string
+      confirm_new_password:
+        type: string
+      email:
+        type: string
+      new_password:
+        type: string
+    type: object
   user.CreateUserModel:
     properties:
       confirm_password:
@@ -161,6 +172,25 @@ paths:
         "204":
           description: No Content
       summary: send reset password validation
+      tags:
+      - auth
+  /auth/validate-reset-password:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: enter credentials
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/reset_password.ValidateReq'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: validate password reset
       tags:
       - auth
   /book:

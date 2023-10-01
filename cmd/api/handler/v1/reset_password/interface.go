@@ -4,4 +4,5 @@ import "github.com/gin-gonic/gin"
 
 type Handler interface {
 	SendResetPasswordValidation(c *gin.Context)
+	Validate(c *gin.Context)
 }

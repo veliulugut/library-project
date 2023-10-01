@@ -16,5 +16,6 @@ func (s *Server) linkRoutes() {
 		v1Grp.GET("/book/get/:id", s.hnd.book.GetBookByID)
 		v1Grp.GET("/books", s.hnd.book.ListBook)
 		v1Grp.POST("/auth/reset-password", s.hnd.respass.SendResetPasswordValidation)
+		v1Grp.POST("/auth/validate-reset-password", s.hnd.respass.Validate)
 	}
 }
