@@ -1,3 +1,5 @@
+//go:generate mockgen -destination=user_mocks.go -package=entadp library/pkg/repository/entadp UserRepositoryInterface
+//go:generate mockgen -destination=repository_mocks.go -package=entadp library/pkg/repository/entadp RepositoryInterface
 package entadp
 
 import (

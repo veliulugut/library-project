@@ -148,6 +148,8 @@ func (b *Book) GetBookByName(c *gin.Context) {
 // @Param id   path int true "id"
 // @Success 200 {object} book.GetBookModel "ok"
 // @Router /book/get/{id} [get]
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization"
 func (b *Book) GetBookByID(c *gin.Context) {
 	idParam := c.Param("id")
 

@@ -13,6 +13,7 @@ import (
 	loginhnd "library/cmd/api/handler/v1/login"
 	respassapi "library/cmd/api/handler/v1/reset_password"
 	userhnd "library/cmd/api/handler/v1/user"
+	"library/cmd/api/middlewares/auth"
 	_ "library/docs"
 	"library/ent"
 	golangjwt "library/pkg/jwt/golang_jwt"
@@ -56,7 +57,8 @@ func (s *Server) initMiddlewares() {
 	s.router.Use(gin.Logger())
 	s.router.Use(gin.Recovery())
 	s.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-
+	jwt := golangjwt.New("verysecretkey", 24)
+	s.mw = auth.New(jwt)
 }
 
 func (s *Server) initHandlers() error {

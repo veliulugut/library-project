@@ -7,6 +7,7 @@ import (
 	"library/cmd/api/handler/v1/login"
 	"library/cmd/api/handler/v1/reset_password"
 	"library/cmd/api/handler/v1/user"
+	"library/cmd/api/middlewares/auth"
 	"library/ent"
 	"library/pkg/utils"
 	"os"
@@ -23,6 +24,7 @@ type Server struct {
 	dbClient *ent.Client
 	port     int
 	hnd      Handlers
+	mw       auth.Auth
 }
 
 type Handlers struct {

@@ -58,6 +58,18 @@ func (mr *MockHandlerMockRecorder) DeleteBook(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteBook", reflect.TypeOf((*MockHandler)(nil).DeleteBook), arg0)
 }
 
+// GetBookByID mocks base method.
+func (m *MockHandler) GetBookByID(arg0 *gin.Context) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "GetBookByID", arg0)
+}
+
+// GetBookByID indicates an expected call of GetBookByID.
+func (mr *MockHandlerMockRecorder) GetBookByID(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBookByID", reflect.TypeOf((*MockHandler)(nil).GetBookByID), arg0)
+}
+
 // GetBookByName mocks base method.
 func (m *MockHandler) GetBookByName(arg0 *gin.Context) {
 	m.ctrl.T.Helper()
@@ -68,6 +80,30 @@ func (m *MockHandler) GetBookByName(arg0 *gin.Context) {
 func (mr *MockHandlerMockRecorder) GetBookByName(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBookByName", reflect.TypeOf((*MockHandler)(nil).GetBookByName), arg0)
+}
+
+// ListBook mocks base method.
+func (m *MockHandler) ListBook(arg0 *gin.Context) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "ListBook", arg0)
+}
+
+// ListBook indicates an expected call of ListBook.
+func (mr *MockHandlerMockRecorder) ListBook(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBook", reflect.TypeOf((*MockHandler)(nil).ListBook), arg0)
+}
+
+// ServeExcel mocks base method.
+func (m *MockHandler) ServeExcel(arg0 *gin.Context, arg1, arg2 int, arg3 string, arg4 bool) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "ServeExcel", arg0, arg1, arg2, arg3, arg4)
+}
+
+// ServeExcel indicates an expected call of ServeExcel.
+func (mr *MockHandlerMockRecorder) ServeExcel(arg0, arg1, arg2, arg3, arg4 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServeExcel", reflect.TypeOf((*MockHandler)(nil).ServeExcel), arg0, arg1, arg2, arg3, arg4)
 }
 
 // UpdatedBook mocks base method.

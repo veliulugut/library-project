@@ -280,6 +280,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -287,6 +292,8 @@ paths:
           description: ok
           schema:
             $ref: '#/definitions/book.GetBookModel'
+      security:
+      - ApiKeyAuth: []
       summary: get book by id
       tags:
       - book
