@@ -119,10 +119,10 @@ func TestUser_DeleteUser(t *testing.T) {
 			if err != nil {
 				if tc.expectedErrMsg != "" {
 					if err.Error() != tc.expectedErrMsg {
-						t.Errorf("Beklenen hata mesajı %q, ancak alınan hata mesajı %q", tc.expectedErrMsg, err.Error())
+						t.Errorf("expected error: %q, but got error: %q", tc.expectedErrMsg, err.Error())
 					}
 				} else {
-					t.Errorf("Hata beklenmiyordu, ancak hata oluştu: %v", err)
+					t.Errorf("Error not expected, but error occurred: %v", err)
 				}
 			}
 		})
