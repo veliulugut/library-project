@@ -2,10 +2,10 @@ package server
 
 import (
 	"context"
+	"entgo.io/ent/dialect"
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -30,7 +30,7 @@ import (
 
 func (s *Server) initDB() error {
 	var err error
-	s.dbClient, err = ent.Open("mysql", "root:123turkTR562@tcp(localhost:3306)/librarydb?parseTime=true")
+	s.dbClient, err = ent.Open(dialect.SQLite, "file:ent?mode=memory&cache=shared&_fk=1")
 	if err != nil {
 		return fmt.Errorf("init db :%w", err)
 	}
