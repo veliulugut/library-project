@@ -21,9 +21,10 @@ import (
 
 	"entgo.io/ent/dialect"
 	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
+
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "github.com/xiaoqidun/entps"
 )
 
 func (s *Server) initDB() error {
