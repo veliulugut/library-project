@@ -2,13 +2,7 @@ package server
 
 import (
 	"context"
-	"entgo.io/ent/dialect"
-	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"library/cmd/api/handler/v1/book"
 	loginhnd "library/cmd/api/handler/v1/login"
 	respassapi "library/cmd/api/handler/v1/reset_password"
@@ -24,8 +18,12 @@ import (
 	loginsrv "library/service/login"
 	respass "library/service/reset_password"
 	usersrv "library/service/user"
-	"os"
-	"strconv"
+
+	"entgo.io/ent/dialect"
+	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func (s *Server) initDB() error {
@@ -88,35 +86,35 @@ func (s *Server) initHandlers() error {
 }
 
 func getEmailEnvironment() (host string, port int, from string, password string, err error) {
-	host, ok := os.LookupEnv("SMTP_HOST")
-	if !ok {
-		err = errors.New("smtp host env not found")
-		return
-	}
+	// host, ok := os.LookupEnv("SMTP_HOST")
+	// if !ok {
+	// 	err = errors.New("smtp host env not found")
+	// 	return
+	// }
 
-	portStr, ok := os.LookupEnv("SMTP_PORT")
-	if !ok {
-		err = errors.New("smtp port env not found")
-		return
-	}
+	// portStr, ok := os.LookupEnv("SMTP_PORT")
+	// if !ok {
+	// 	err = errors.New("smtp port env not found")
+	// 	return
+	// }
 
-	port, err = strconv.Atoi(portStr)
-	if err != nil {
-		err = errors.New("invalid port env")
-		return
-	}
+	// port, err = strconv.Atoi(portStr)
+	// if err != nil {
+	// 	err = errors.New("invalid port env")
+	// 	return
+	// }
 
-	from, ok = os.LookupEnv("SMTP_FROM")
-	if !ok {
-		err = errors.New("smtp from env not found")
-		return
-	}
+	// from, ok = os.LookupEnv("SMTP_FROM")
+	// if !ok {
+	// 	err = errors.New("smtp from env not found")
+	// 	return
+	// }
 
-	password, ok = os.LookupEnv("SMTP_PASSWORD")
-	if !ok {
-		err = errors.New("smtp password env not found")
-		return
-	}
+	// password, ok = os.LookupEnv("SMTP_PASSWORD")
+	// if !ok {
+	// 	err = errors.New("smtp password env not found")
+	// 	return
+	// }
 
 	return
 }

@@ -3,9 +3,9 @@ FROM docker.io/library/golang:1.21.0
 
 WORKDIR /usr/src/app
 
-COPY go.mod go.sum ./
+COPY go.* ./
 
-RUN go mod download && go mod verify
+RUN go mod download
 
 COPY . .
 
