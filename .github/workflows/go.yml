@@ -26,3 +26,7 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: deploy
+      run: |
+        curl -H 'Authorization: Bearer ${{ secrets.API_TOKEN }}' "http://176.96.131.166:8000/api/v1/deploy?uuid=iggo4ow08s4wk0gs8cgkcwwg&force=false"
