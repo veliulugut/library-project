@@ -1,5 +1,4 @@
-
-FROM docker.io/library/golang:1.21.0 as builder
+FROM golang:1.21.0 AS builder
 
 WORKDIR /app
 
@@ -9,14 +8,14 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -v -o /app/api ./cmd/api
+RUN go build -o /app/api ./cmd/api
 
+FROM alpine:3.14.2
 
-FROM docker.io/library/alpine:3.14.2
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY --from=builder /app/api /app/api
+COPY --from=builder /app/api /usr/local/bin/api
 
-
-CMD ["/app/api"]
+ENTRYPOINT [ "api" ]
