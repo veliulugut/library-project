@@ -31,5 +31,4 @@ jobs:
       env:
         API_TOKEN: ${{ secrets.API_TOKEN }}
         DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
-      run: |
-        curl -H 'Authorization: Bearer $API_TOKEN' "$DEPLOY_URL"
+      run: 'curl -H "Authorization: Bearer $API_TOKEN" "$DEPLOY_URL"'
