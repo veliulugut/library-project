@@ -1,7 +1,7 @@
 
-FROM docker.io/library/golang:1.21.0
+FROM docker.io/library/golang:1.21.0 as builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY go.* ./
 
@@ -9,6 +9,12 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -v -o /usr/local/bin/app ./cmd/api
+RUN go build -v -o /app/api ./cmd/api
 
-CMD ["app"] 
+
+FROM docker.io/library/alpine:3.14.2
+
+COPY --from=builder /app/api /app/api
+
+
+CMD ["/app/api"]
