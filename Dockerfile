@@ -14,6 +14,8 @@ RUN go build -v -o /app/api ./cmd/api
 
 FROM docker.io/library/alpine:3.14.2
 
+WORKDIR /app
+
 COPY --from=builder /app/api /app/api
 
 
