@@ -32,4 +32,4 @@ jobs:
       with:
         url: ${{ secrets.DEPLOY_URL }}
         method: 'GET'
-        customHeaders: '{"Authorization": "Bearer ${{ secrets.API_TOKEN }}"}'
+        customHeaders: '{"Authorization": "Bearer ${{ secrets.DEPLOY_TOKEN }}"}'
