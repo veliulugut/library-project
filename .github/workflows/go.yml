@@ -27,8 +27,9 @@ jobs:
     # - name: Test
     #   run: go test -v ./...
 
-    - name: deploy
-      env:
-        API_TOKEN: ${{ secrets.API_TOKEN }}
-        DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
-      run: 'curl -H "Authorization: Bearer $API_TOKEN" "$DEPLOY_URL"'
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: ${{ secrets.DEPLOY_URL }}
+        method: 'GET'
+        customHeaders: '{"Authorization": "Bearer ${{ secrets.API_TOKEN }}"}'
